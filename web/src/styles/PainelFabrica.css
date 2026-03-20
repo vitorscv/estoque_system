@@ -1,0 +1,571 @@
+/* ========================================
+   PAINEL FÁBRICA - CLONE DJANGO ADMIN DARK MODE
+   Cores extraídas das capturas de tela reais
+   ======================================== */
+
+/* Reset e Container Principal */
+* {
+  box-sizing: border-box;
+}
+
+.painel-fabrica {
+  font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+  background-color: #0a0a0a;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  color: #f5f5f5;
+}
+
+/* ========================================
+   HEADER SUPERIOR (Dark Mode)
+   ======================================== */
+.painel-fabrica__header {
+  background: linear-gradient(to right, #417690 0%, #5a8ca8 100%);
+  color: #ffffff;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 40px;
+}
+
+.painel-fabrica__header-title {
+  font-size: 18px;
+  font-weight: 300;
+  margin: 0;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+.painel-fabrica__header-user {
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.painel-fabrica__header-link {
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
+  transition: color 0.2s;
+}
+
+.painel-fabrica__header-link:hover {
+  color: #e0e0e0;
+}
+
+.painel-fabrica__dark-mode-icon {
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* ========================================
+   LAYOUT COM SIDEBAR
+   ======================================== */
+.painel-fabrica__layout {
+  display: flex;
+  margin-top: 40px;
+  min-height: calc(100vh - 40px);
+}
+
+/* Sidebar Esquerda (Dark) */
+.painel-fabrica__sidebar {
+  width: 260px;
+  background-color: #1a3a52;
+  border-right: 1px solid #2d4a5e;
+  padding: 20px 0;
+  position: fixed;
+  left: 0;
+  top: 40px;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+.painel-fabrica__sidebar-section {
+  margin-bottom: 25px;
+}
+
+.painel-fabrica__sidebar-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-color: #417690;
+  padding: 8px 20px;
+  border-bottom: none;
+  margin-bottom: 0;
+  letter-spacing: 1px;
+}
+
+.painel-fabrica__sidebar-link {
+  display: block;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #b8d4e3;
+  text-decoration: none;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.painel-fabrica__sidebar-link:hover {
+  background-color: #234053;
+  color: #f5dd5d;
+  border-left-color: #f5dd5d;
+}
+
+.painel-fabrica__sidebar-link--active {
+  background-color: #2d4a5e;
+  font-weight: 600;
+  color: #f5dd5d;
+  border-left-color: #f5dd5d;
+}
+
+/* Área de Conteúdo Principal */
+.painel-fabrica__content {
+  flex: 1;
+  margin-left: 260px;
+  background-color: #0c1e2b;
+}
+
+/* ========================================
+   BREADCRUMB BAR
+   ======================================== */
+.painel-fabrica__breadcrumb {
+  background-color: #1a2c3d;
+  border-bottom: 1px solid #2d4a5e;
+  padding: 12px 30px;
+  font-size: 12px;
+  color: #8ab4c4;
+}
+
+.painel-fabrica__breadcrumb a {
+  color: #79aec8;
+  text-decoration: none;
+}
+
+.painel-fabrica__breadcrumb a:hover {
+  color: #f5dd5d;
+  text-decoration: underline;
+}
+
+.painel-fabrica__breadcrumb-separator {
+  margin: 0 8px;
+  color: #5a7a8f;
+}
+
+/* ========================================
+   ÁREA PRINCIPAL
+   ======================================== */
+.painel-fabrica__main {
+  padding: 30px;
+}
+
+.painel-fabrica__header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.painel-fabrica__title {
+  font-size: 28px;
+  font-weight: 300;
+  color: #f5f5f5;
+  margin: 0;
+}
+
+.painel-fabrica__add-button {
+  padding: 10px 20px;
+  background-color: #417690;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.painel-fabrica__add-button:hover {
+  background-color: #5a8ca8;
+  box-shadow: 0 2px 8px rgba(65, 118, 144, 0.4);
+}
+
+/* Barra de Busca e Filtros */
+.painel-fabrica__toolbar {
+  background-color: #1a2c3d;
+  border: 1px solid #2d4a5e;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 4px;
+}
+
+.painel-fabrica__search-input {
+  flex: 1;
+  max-width: 400px;
+  padding: 8px 12px;
+  border: 1px solid #2d4a5e;
+  border-radius: 3px;
+  font-size: 13px;
+  background-color: #0c1e2b;
+  color: #f5f5f5;
+}
+
+.painel-fabrica__search-input::placeholder {
+  color: #5a7a8f;
+}
+
+.painel-fabrica__search-button {
+  padding: 8px 16px;
+  background-color: #417690;
+  color: #ffffff;
+  border: none;
+  border-radius: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.painel-fabrica__search-button:hover {
+  background-color: #5a8ca8;
+}
+
+/* ========================================
+   TABELA ADMINISTRATIVA DARK MODE
+   ======================================== */
+.painel-fabrica__table-container {
+  background-color: #1a2c3d;
+  border: 1px solid #2d4a5e;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.painel-fabrica__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+/* Cabeçalho da Tabela */
+.painel-fabrica__table thead {
+  background-color: #417690;
+  color: #ffffff;
+}
+
+.painel-fabrica__table th {
+  text-align: left;
+  padding: 12px 15px;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #2d4a5e;
+}
+
+.painel-fabrica__table th:first-child {
+  width: 40px;
+  text-align: center;
+}
+
+/* Corpo da Tabela */
+.painel-fabrica__table tbody tr {
+  border-bottom: 1px solid #2d4a5e;
+  transition: background-color 0.15s;
+}
+
+.painel-fabrica__table tbody tr:nth-child(even) {
+  background-color: #152533;
+}
+
+.painel-fabrica__table tbody tr:hover {
+  background-color: #234053;
+}
+
+.painel-fabrica__table td {
+  padding: 12px 15px;
+  color: #b8d4e3;
+  vertical-align: middle;
+}
+
+.painel-fabrica__table td:first-child {
+  text-align: center;
+}
+
+.painel-fabrica__table-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #417690;
+}
+
+.painel-fabrica__table-link {
+  color: #79aec8;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.painel-fabrica__table-link:hover {
+  color: #f5dd5d;
+  text-decoration: underline;
+}
+
+/* Coluna de Quantidade (Destaque) */
+.painel-fabrica__table-quantidade {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f5dd5d;
+}
+
+.painel-fabrica__table-status {
+  color: #4caf50;
+  font-weight: 600;
+}
+
+/* ========================================
+   MODAL DE FORMULÁRIO (Clone Django Add)
+   ======================================== */
+.painel-fabrica__modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.painel-fabrica__modal {
+  background-color: #1a2c3d;
+  border: 1px solid #2d4a5e;
+  border-radius: 6px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.painel-fabrica__modal-header {
+  background: linear-gradient(to right, #0c4b33 0%, #205280 100%);
+  color: #ffffff;
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #2d4a5e;
+}
+
+.painel-fabrica__modal-title {
+  font-size: 20px;
+  font-weight: 300;
+  margin: 0;
+  color: #f5dd5d;
+}
+
+.painel-fabrica__modal-close {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.painel-fabrica__modal-close:hover {
+  color: #f5dd5d;
+}
+
+.painel-fabrica__modal-body {
+  padding: 30px 25px;
+}
+
+.painel-fabrica__form-group {
+  margin-bottom: 25px;
+}
+
+.painel-fabrica__form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8ab4c4;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.painel-fabrica__form-input,
+.painel-fabrica__form-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #2d4a5e;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #0c1e2b;
+  color: #f5f5f5;
+  transition: border-color 0.2s;
+}
+
+.painel-fabrica__form-input:focus,
+.painel-fabrica__form-select:focus {
+  outline: none;
+  border-color: #417690;
+  box-shadow: 0 0 0 2px rgba(65, 118, 144, 0.2);
+}
+
+.painel-fabrica__form-select {
+  cursor: pointer;
+}
+
+.painel-fabrica__form-help {
+  font-size: 11px;
+  color: #5a7a8f;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.painel-fabrica__modal-footer {
+  padding: 20px 25px;
+  background-color: #152533;
+  border-top: 1px solid #2d4a5e;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.painel-fabrica__btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.painel-fabrica__btn--primary {
+  background-color: #417690;
+  color: #ffffff;
+}
+
+.painel-fabrica__btn--primary:hover {
+  background-color: #5a8ca8;
+  box-shadow: 0 2px 8px rgba(65, 118, 144, 0.4);
+}
+
+.painel-fabrica__btn--secondary {
+  background-color: #2d4a5e;
+  color: #b8d4e3;
+}
+
+.painel-fabrica__btn--secondary:hover {
+  background-color: #3a5f75;
+}
+
+/* ========================================
+   RODAPÉ
+   ======================================== */
+.painel-fabrica__footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #2d4a5e;
+  font-size: 12px;
+  color: #5a7a8f;
+  text-align: left;
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+@media (max-width: 768px) {
+  .painel-fabrica__sidebar {
+    width: 200px;
+  }
+
+  .painel-fabrica__content {
+    margin-left: 200px;
+  }
+
+  .painel-fabrica__modal {
+    width: 95%;
+  }
+
+  .painel-fabrica__header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .painel-fabrica__sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+
+  .painel-fabrica__content {
+    margin-left: 0;
+  }
+
+  .painel-fabrica__table {
+    font-size: 11px;
+  }
+
+  .painel-fabrica__table th,
+  .painel-fabrica__table td {
+    padding: 8px 10px;
+  }
+}
