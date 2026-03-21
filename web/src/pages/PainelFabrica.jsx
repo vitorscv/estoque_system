@@ -175,6 +175,7 @@ function PainelFabrica() {
   const [categoriaId, setCategoriaId] = useState('')
   const [estoqueMinimo, setEstoqueMinimo] = useState(100)
   const [ativoSaco, setAtivoSaco] = useState(true)
+  const [confirmarExclusao, setConfirmarExclusao] = useState({ aberto: false, tipo: null, id: null })
 
   /* ── Carregamento de dados ──────────────────────────────────── */
   const carregarSacos = () =>
@@ -300,6 +301,45 @@ function PainelFabrica() {
       })
       .catch(err => {
         alert(err.response?.data || 'Erro ao criar saco reserva.')
+      })
+  }
+
+  /* ── Deleção: Saco / Categoria / Movimentacao ────────────────── */ 
+  const handleDeleteSaco = (id) => {
+    setConfirmarExclusao({ aberto: true, tipo: 'saco', id })
+  }
+
+  const handleDeleteCategoria = (id) => {
+    setConfirmarExclusao({ aberto: true, tipo: 'categoria', id })
+  }
+
+  const handleDeleteMovimentacao = (id) => {
+    setConfirmarExclusao({ aberto: true, tipo: 'movimentacao', id })
+  }
+
+  const executarExclusao = () => {
+    const { tipo, id } = confirmarExclusao
+    if (!tipo || !id) {
+      setConfirmarExclusao({ aberto: false, tipo: null, id: null })
+      return
+    }
+
+    let endpoint = ''
+    if (tipo === 'saco') endpoint = `estoque/${id}/`
+    if (tipo === 'categoria') endpoint = `categorias/${id}/`
+    if (tipo === 'movimentacao') endpoint = `movimentacoes/${id}/`
+
+    api.delete(endpoint)
+      .then(res => {
+        // remove from UI regardless of exact status code
+        if (tipo === 'saco') setSacos(prev => prev.filter(s => s.id !== id))
+        if (tipo === 'categoria') setCategorias(prev => prev.filter(c => c.id !== id))
+        if (tipo === 'movimentacao') setMovimentacoes(prev => prev.filter(m => m.id !== id))
+        setConfirmarExclusao({ aberto: false, tipo: null, id: null })
+      })
+      .catch(err => {
+        alert(err.response?.data || 'Erro ao excluir item.')
+        setConfirmarExclusao({ aberto: false, tipo: null, id: null })
       })
   }
 
@@ -473,6 +513,7 @@ function PainelFabrica() {
                         { key: 'categoria_nome',  label: 'Categoria' },
                         { key: 'quantidade_atual',label: 'Quantidade atual' },
                         { key: 'ativo_icone',     label: 'Ativo' },
+                        { key: 'acoes',           label: 'Ações' },
                       ]}
                       linhas={sacosFiltrados.map(s => ({
                         id:              s.id,
@@ -480,6 +521,15 @@ function PainelFabrica() {
                         categoria_nome:  s.categoria_nome || '-',
                         quantidade_atual: s.quantidade_atual,
                         ativo_icone:     s.ativo ? <IconSim /> : <IconNao />,
+                        acoes: (
+                          <button
+                            className="action-icon"
+                            onClick={() => setConfirmarExclusao({ aberto: true, tipo: 'saco', id: s.id })}
+                            title="Excluir saco reserva"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path></svg>
+                          </button>
+                        ),
                       }))}
                       paginator={`${sacosFiltrados.length} saco${sacosFiltrados.length !== 1 ? 's' : ''} reserva${sacosFiltrados.length !== 1 ? 's' : ''}`}
                     />
@@ -522,6 +572,7 @@ function PainelFabrica() {
                         { key: 'quantidade',         label: 'Quantidade' },
                         { key: 'responsavel',        label: 'Responsável' },
                         { key: 'data_fmt',           label: 'Data' },
+                      { key: 'acoes',             label: 'Ações' },
                       ]}
                       linhas={movimentacoesFiltradas.map(m => ({
                         id:             m.id,
@@ -530,6 +581,15 @@ function PainelFabrica() {
                         quantidade:     m.quantidade,
                         responsavel:    m.responsavel || '-',
                         data_fmt:       formatarData(m.data_movimentacao),
+                      acoes: (
+                        <button
+                          className="action-icon"
+                          onClick={() => setConfirmarExclusao({ aberto: true, tipo: 'movimentacao', id: m.id })}
+                          title="Excluir movimentação"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                      ),
                       }))}
                       paginator={`${movimentacoesFiltradas.length} movimentação${movimentacoesFiltradas.length !== 1 ? 'ões' : ''}`}
                     />
@@ -565,11 +625,21 @@ function PainelFabrica() {
                       colunas={[
                         { key: 'nome',        label: 'Nome',          primeiro: true },
                         { key: 'total_sacos', label: 'Total de sacos' },
+                        { key: 'acoes',       label: 'Ações' },
                       ]}
                       linhas={categoriasFiltradas.map(c => ({
                         id:          c.id,
                         nome:        c.nome,
                         total_sacos: c.total_sacos ?? '-',
+                        acoes: (
+                          <button
+                            className="action-icon"
+                            onClick={() => setConfirmarExclusao({ aberto: true, tipo: 'categoria', id: c.id })}
+                            title="Excluir categoria"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path></svg>
+                          </button>
+                        ),
                       }))}
                       paginator={`${categoriasFiltradas.length} categoria${categoriasFiltradas.length !== 1 ? 's' : ''}`}
                     />
@@ -831,6 +901,20 @@ function PainelFabrica() {
                 }} style={{ background: '#79aec8', color: '#fff', padding: '10px 14px', border: 'none', borderRadius: 4, marginLeft: 8 }}>Salvar e continuar editando</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      
+      {/* MODAL: CONFIRMAÇÃO DE EXCLUSÃO */}
+      {confirmarExclusao.aberto && (
+        <div className="confirm-overlay" onClick={() => setConfirmarExclusao({ aberto:false, tipo:null, id:null })}>
+          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="confirm-header">Confirmar Exclusão</div>
+            <div className="confirm-body">Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.</div>
+            <div className="confirm-footer">
+              <button className="confirm-btn confirm-cancel" onClick={() => setConfirmarExclusao({ aberto:false, tipo:null, id:null })}>Cancelar</button>
+              <button className="confirm-btn confirm-delete" onClick={executarExclusao}>Sim, Excluir</button>
+            </div>
           </div>
         </div>
       )}

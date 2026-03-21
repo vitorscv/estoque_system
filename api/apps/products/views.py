@@ -99,3 +99,14 @@ class MovimentarEstoqueView(APIView):
             {"erro": "Tipo de movimentação inválido."},
             status=status.HTTP_400_BAD_REQUEST,
         )
+class SacoReservaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SacoReserva.objects.all()
+    serializer_class = SacoReservaSerializer
+
+class CategoriaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CategoriaSacaria.objects.all()
+    serializer_class = CategoriaSerializer
+
+class MovimentacaoDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MovimentacaoEstoque.objects.all()
+    serializer_class = MovimentacaoEstoqueSerializer
