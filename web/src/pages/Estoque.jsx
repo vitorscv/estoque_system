@@ -22,7 +22,7 @@ function Estoque() {
   // lista original só aparece com categoria  
   const sacosFiltrados = sacos.filter(saco =>
     saco.descricao.toLowerCase().includes(busca.toLowerCase()) ||
-    saco.categoria_nome.toLowerCase().includes(busca.toLowerCase())
+    (saco.categoria_nome || '').toLowerCase().includes(busca.toLowerCase())
   )
 
   return (

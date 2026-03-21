@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import F
 
 class CategoriaSacaria(models.Model):
-    # A produção cadastra os tipos dinamicamente (Ex: Convencional, Laminado Valvulado)
+    # A produção cadastra os tipos dinamicamente
     nome = models.CharField(max_length=100, unique=True, help_text="Nome da categoria/tipo do saco")
 
     def __str__(self):
