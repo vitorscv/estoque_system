@@ -1,0 +1,157 @@
+/* LayoutFabrica.css
+   Centraliza regras de layout responsivo para o painel da fábrica
+*/ 
+
+/* Container geral */
+.main {
+  display: flex;
+  align-items: flex-start;
+  min-height: calc(100vh - 120px);
+  width: 100%;
+  overflow-x: hidden; /* Evita rolagem horizontal na tela inteira */
+}
+
+/* Sidebar fixa no desktop */
+#nav-sidebar {
+  flex: 0 0 280px;
+  width: 280px;
+  min-height: 100%;
+  transition: all 0.3s ease;
+}
+
+#nav-sidebar.sidebar-closed {
+  margin-left: -280px;
+}
+
+/* Conteúdo principal fluido */
+.content {
+  flex: 1;
+  padding: 20px 36px;
+  background: var(--body-bg);
+  box-sizing: border-box;
+  width: calc(100% - 280px); /* Garante que respeite a sidebar */
+  min-width: 0; /* O pulo do gato pro Flexbox não estourar */
+}
+
+/* Título padronizado */
+#content h1 {
+  margin: 0 0 16px 0;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--body-loud-color);
+}
+
+/* Toolbar padrão (search + actions) responsiva */
+.toolbar-header {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os itens pulem de linha em telas menores */
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#changelist-search > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: var(--darkened-bg);
+  border: 1px solid var(--border-color);
+  flex-wrap: wrap; /* Permite quebrar linha na pesquisa se precisar */
+}
+
+#changelist-search input[type="text"] {
+  flex: 1; /* Cresce para ocupar o espaço */
+  min-width: 200px;
+  height: 36px;
+  padding: 6px 10px;
+}
+
+/* Match previous addlink/button visual inside toolbar-header */
+.toolbar-header .object-tools a.addlink,
+.toolbar-header .object-tools a.addlink:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--object-tools-bg);
+  color: var(--object-tools-fg);
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-decoration: none;
+}
+.toolbar-header .object-tools a.addlink::before {
+  content: "+";
+  margin-right: 6px;
+  font-weight: 700;
+}
+
+/* Search submit button styling to match previous look */
+.changelist-toolbar input[type="submit"],
+.toolbar-header input[type="submit"] {
+  padding: 8px 12px;
+  background: var(--button-bg);
+  color: var(--button-fg);
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.object-tools { 
+  align-items: center; 
+  display: flex; 
+  flex-wrap: wrap;
+  gap: 8px; 
+}
+
+/* --- O SEGREDO DA TABELA RESPONSIVA --- */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto; /* Cria barra de rolagem horizontal só pra tabela */
+  -webkit-overflow-scrolling: touch; /* Rolagem suave no celular */
+  border: 1px solid var(--border-color); /* Borda em volta da tabela */
+  border-radius: 8px;
+}
+
+#result_list {
+  width: 100%;
+  min-width: 800px; /* Força a rolagem se a tela for menor que 800px */
+  border-collapse: collapse;
+}
+
+#result_list tbody td, #result_list tbody th {
+  padding: 12px 14px;
+  line-height: 1.25;
+  height: 48px;
+  vertical-align: middle;
+}
+
+/* Alinhamentos gerais de tabela */
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.font-bold { font-weight: 700; }
+
+/* Breakpoints para Telas Menores (Tablets e Celulares) */
+@media (max-width: 1024px) {
+  .content { padding: 20px 16px; }
+  #nav-sidebar { flex: 0 0 220px; width: 220px; }
+}
+
+@media (max-width: 768px) {
+  .main { flex-direction: column; }
+  #nav-sidebar { 
+    width: 100%; 
+    flex: none; 
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .content { width: 100%; }
+  
+  .toolbar-header {
+    flex-direction: column;
+    align-items: stretch; /* Estica botões e inputs */
+  }
+}

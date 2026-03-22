@@ -35,7 +35,7 @@ class GrupoListView(generics.ListAPIView):
     serializer_class = GrupoSerializer
 
 
-class UsuarioListView(generics.ListAPIView):
+class UsuarioListView(generics.ListCreateAPIView):
     queryset = User.objects.all().order_by('username')
     serializer_class = UsuarioSerializer
 

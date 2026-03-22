@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import api from '../services/api'
 import '../styles/PainelFabrica.css'
+import '../styles/LayoutFabrica.css'
 
 /* ─── SVGs de status reutilizáveis ─────────────────────────────── */
 const IconSim = () => (
@@ -27,9 +28,10 @@ function ChangeList({ searchPlaceholder, busca, setBusca, acaoLabel, colunas, li
   return (
     <div className="module" id="changelist">
       <form id="changelist-search" method="get" onSubmit={(e) => e.preventDefault()}>
-        <div>
+        <div className="changelist-toolbar">
           <label htmlFor="searchbar"><SearchIcon /></label>
           <input
+            className="search-input"
             type="text"
             size="40"
             name="q"
@@ -55,7 +57,8 @@ function ChangeList({ searchPlaceholder, busca, setBusca, acaoLabel, colunas, li
         </div>
 
         <div className="results">
-          <table id="result_list">
+          <div className="table-responsive">
+            <table id="result_list">
             <thead>
               <tr>
                 <th scope="col" className="action-checkbox-column">
@@ -92,7 +95,8 @@ function ChangeList({ searchPlaceholder, busca, setBusca, acaoLabel, colunas, li
                 </tr>
               )}
             </tbody>
-          </table>
+            </table>
+          </div>
         </div>
 
         <p className="paginator">{paginator}</p>
@@ -343,6 +347,34 @@ function PainelFabrica() {
       })
   }
 
+  /* ── Modal: Novo Usuário (aba Usuários) ─────────────────────── */ 
+  const [modalUsuarioAberto, setModalUsuarioAberto] = useState(false)
+  const [novoUsuario, setNovoUsuario] = useState({ username: '', password: '' })
+  const [confirmSenha, setConfirmSenha] = useState('')
+
+  const handleSalvarUsuario = (e) => {
+    e.preventDefault()
+    if (!novoUsuario.username.trim() || !novoUsuario.password) {
+      alert('Preencha usuário e senha.')
+      return
+    }
+    if (novoUsuario.password !== confirmSenha) {
+      alert('As senhas não conferem.')
+      return
+    }
+    api.post('usuarios/', novoUsuario)
+      .then(res => {
+        // espera 201 com objeto do usuário
+        setUsuarios(prev => [res.data, ...prev])
+        setModalUsuarioAberto(false)
+        setNovoUsuario({ username: '', password: '' })
+        setConfirmSenha('')
+      })
+      .catch(err => {
+        alert(err.response?.data || 'Erro ao criar usuário.')
+      })
+  }
+
   /* ── Helpers de navegação ────────────────────────────────────── */
   const irPara = (aba) => setAbaAtiva(aba)
 
@@ -371,33 +403,9 @@ function PainelFabrica() {
 
       <div id="container">
 
-        {/* ── Header ─────────────────────────────────────────────── */}
-        <header id="header">
-          <div id="branding">
-            <h1 id="site-name">
-              <a href="#" onClick={(e) => e.preventDefault()}>Pantex</a>
-            </h1>
-          </div>
-          <div id="user-tools">
-            Bem-vindo, <strong>Vitor</strong>.
-            <a href="#" onClick={(e) => e.preventDefault()}>Ver site</a>
-            <span className="separator">/</span>
-            <a href="#" onClick={(e) => e.preventDefault()}>Alterar senha</a>
-            <span className="separator">/</span>
-            <a href="#" onClick={(e) => e.preventDefault()}>Sair</a>
-          </div>
-        </header>
+        {/* cabeçalho removido (adaptado para Pantex) */}
 
-        {/* ── Breadcrumbs ────────────────────────────────────────── */}
-        <nav aria-label="Breadcrumbs">
-          <div className="breadcrumbs">
-            <a href="#" onClick={(e) => e.preventDefault()}>Início</a>
-            <span className="breadcrumb-separator">›</span>
-            <a href="#" onClick={(e) => e.preventDefault()}>{bc.secao}</a>
-            <span className="breadcrumb-separator">›</span>
-            <span>{bc.item}</span>
-          </div>
-        </nav>
+        {/* breadcrumbs removido conforme solicitado */}
 
         <div className="main" id="main">
 
@@ -480,30 +488,31 @@ function PainelFabrica() {
                     ABA: SACO RESERVAS
                 ════════════════════════════════════════════════ */}
                 {abaAtiva === 'saco_reservas' && (
-                  <>
-                    <ul className="object-tools" style={{ marginTop: 8 }}>
-                      <li>
-                        <a
-                          href="#"
-                          className="addlink"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            // open Saco add modal
-                            setCodigoReferencia('')
-                            setDescricaoSaco('')
-                            setCategoriaId('')
-                            setEstoqueMinimo(100)
-                            setAtivoSaco(true)
-                            carregarCategorias()
-                            setModalSacoAberto(true)
-                          }}
-                        >
-                          ADICIONAR SACO RESERVA
-                        </a>
-                      </li>
-                    </ul>
+                  <div>
+                    <div className="toolbar-header">
+                      <ul className="object-tools" style={{ marginTop: 8 }}>
+                        <li>
+                          <a
+                            href="#"
+                            className="addlink"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              // open Saco add modal
+                              setCodigoReferencia('')
+                              setDescricaoSaco('')
+                              setCategoriaId('')
+                              setEstoqueMinimo(100)
+                              setAtivoSaco(true)
+                              carregarCategorias()
+                              setModalSacoAberto(true)
+                            }}
+                          >
+                            ADICIONAR SACO RESERVA
+                          </a>
+                        </li>
+                      </ul>
 
-                    <ChangeList
+                      <ChangeList
                       searchPlaceholder="Pesquisar saco reserva"
                       busca={buscaSacos}
                       setBusca={setBuscaSacos}
@@ -532,36 +541,38 @@ function PainelFabrica() {
                         ),
                       }))}
                       paginator={`${sacosFiltrados.length} saco${sacosFiltrados.length !== 1 ? 's' : ''} reserva${sacosFiltrados.length !== 1 ? 's' : ''}`}
-                    />
-                  </>
+                      />
+                    </div>
+                  </div>
                 )}
 
                 {/* ════════════════════════════════════════════════
                     ABA: MOVIMENTAÇÕES
                 ════════════════════════════════════════════════ */}
                 {abaAtiva === 'movimentacoes' && (
-                  <>
-                    <ul className="object-tools">
-                      <li>
-                        <a
-                          href="#"
-                          className="addlink"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            setSacoSelecionado('')
-                            setTipoMovimentacao('entrada')
-                            setQuantidade('')
-                            setResponsavel('')
-                            setObservacao('')
-                            setModalMovAberto(true)
-                          }}
-                        >
-                          Adicionar movimentação estoque
-                        </a>
-                      </li>
-                    </ul>
+                  <div>
+                    <div className="toolbar-header">
+                      <ul className="object-tools">
+                        <li>
+                          <a
+                            href="#"
+                            className="addlink"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setSacoSelecionado('')
+                              setTipoMovimentacao('entrada')
+                              setQuantidade('')
+                              setResponsavel('')
+                              setObservacao('')
+                              setModalMovAberto(true)
+                            }}
+                          >
+                            Adicionar movimentação estoque
+                          </a>
+                        </li>
+                      </ul>
 
-                    <ChangeList
+                      <ChangeList
                       searchPlaceholder="Pesquisar por saco ou responsável"
                       busca={buscaMovimentacoes}
                       setBusca={setBuscaMovimentacoes}
@@ -592,32 +603,34 @@ function PainelFabrica() {
                       ),
                       }))}
                       paginator={`${movimentacoesFiltradas.length} movimentação${movimentacoesFiltradas.length !== 1 ? 'ões' : ''}`}
-                    />
-                  </>
+                      />
+                    </div>
+                  </div>
                 )}
 
                 {/* ════════════════════════════════════════════════
                     ABA: CATEGORIAS
                 ════════════════════════════════════════════════ */}
                 {abaAtiva === 'categorias' && (
-                  <>
-                    <ul className="object-tools">
-                      <li>
-                        <a
-                          href="#"
-                          className="addlink"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            setNomeCategoria('')
-                            setModalCatAberto(true)
-                          }}
-                        >
-                          Adicionar categoria sacaria
-                        </a>
-                      </li>
-                    </ul>
+                  <div>
+                    <div className="toolbar-header">
+                      <ul className="object-tools">
+                        <li>
+                          <a
+                            href="#"
+                            className="addlink"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setNomeCategoria('')
+                              setModalCatAberto(true)
+                            }}
+                          >
+                            Adicionar categoria sacaria
+                          </a>
+                        </li>
+                      </ul>
 
-                    <ChangeList
+                      <ChangeList
                       searchPlaceholder="Pesquisar categoria"
                       busca={buscaCategorias}
                       setBusca={setBuscaCategorias}
@@ -642,8 +655,9 @@ function PainelFabrica() {
                         ),
                       }))}
                       paginator={`${categoriasFiltradas.length} categoria${categoriasFiltradas.length !== 1 ? 's' : ''}`}
-                    />
-                  </>
+                      />
+                    </div>
+                  </div>
                 )}
 
                 {/* ════════════════════════════════════════════════
@@ -670,30 +684,58 @@ function PainelFabrica() {
                     ABA: USUÁRIOS
                 ════════════════════════════════════════════════ */}
                 {abaAtiva === 'usuarios' && (
-                  <ChangeList
-                    searchPlaceholder="Pesquisar usuário ou e-mail"
-                    busca={buscaUsuarios}
-                    setBusca={setBuscaUsuarios}
-                    acaoLabel="usuários"
-                    colunas={[
-                      { key: 'username',   label: 'Usuário',  primeiro: true },
-                      { key: 'email',      label: 'E-mail' },
-                      { key: 'nome_completo', label: 'Nome completo' },
-                      { key: 'staff',      label: 'Equipe' },
-                      { key: 'ativo',      label: 'Ativo' },
-                      { key: 'data_fmt',   label: 'Membro desde' },
-                    ]}
-                    linhas={usuariosFiltrados.map(u => ({
-                      id:            u.id,
-                      username:      u.username,
-                      email:         u.email || '-',
-                      nome_completo: [u.first_name, u.last_name].filter(Boolean).join(' ') || '-',
-                      staff:         u.is_staff  ? <IconSim /> : <IconNao />,
-                      ativo:         u.is_active ? <IconSim /> : <IconNao />,
-                      data_fmt:      formatarData(u.date_joined),
-                    }))}
-                    paginator={`${usuariosFiltrados.length} usuário${usuariosFiltrados.length !== 1 ? 's' : ''}`}
-                  />
+                  <>
+                    <ul className="object-tools">
+                      <li>
+                        <a
+                          href="#"
+                          className="addlink"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            setModalUsuarioAberto(true)
+                            setNovoUsuario({ username: '', password: '' })
+                          }}
+                        >
+                          ADICIONAR USUÁRIO
+                        </a>
+                      </li>
+                    </ul>
+
+                    <ChangeList
+                      searchPlaceholder="Pesquisar usuário ou e-mail"
+                      busca={buscaUsuarios}
+                      setBusca={setBuscaUsuarios}
+                      acaoLabel="usuários"
+                      colunas={[
+                        { key: 'username',   label: 'Usuário',  primeiro: true },
+                        { key: 'email',      label: 'E-mail' },
+                        { key: 'nome_completo', label: 'Nome completo' },
+                        { key: 'staff',      label: 'Equipe' },
+                        { key: 'ativo',      label: 'Ativo' },
+                        { key: 'data_fmt',   label: 'Membro desde' },
+                        { key: 'acoes',      label: 'Ações' },
+                      ]}
+                      linhas={usuariosFiltrados.map(u => ({
+                        id:            u.id,
+                        username:      u.username,
+                        email:         u.email || '-',
+                        nome_completo: [u.first_name, u.last_name].filter(Boolean).join(' ') || '-',
+                        staff:         u.is_staff  ? <IconSim /> : <IconNao />,
+                        ativo:         u.is_active ? <IconSim /> : <IconNao />,
+                        data_fmt:      formatarData(u.date_joined),
+                        acoes: (
+                          <button
+                            className="action-icon"
+                            onClick={() => setConfirmarExclusao({ aberto: true, tipo: 'usuario', id: u.id })}
+                            title="Excluir usuário"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path></svg>
+                          </button>
+                        ),
+                      }))}
+                      paginator={`${usuariosFiltrados.length} usuário${usuariosFiltrados.length !== 1 ? 's' : ''}`}
+                    />
+                  </>
                 )}
 
               </div>
@@ -917,6 +959,45 @@ function PainelFabrica() {
             </div>
           </div>
         </div>
+      )}
+      
+      {/* MODAL: NOVO USUÁRIO */}
+      {modalUsuarioAberto && (
+        <Modal
+          titulo="Adicionar usuário"
+          onFechar={() => setModalUsuarioAberto(false)}
+          onSubmit={handleSalvarUsuario}
+        >
+          <FormRow id="username" label="Nome de Usuário">
+            <input
+              type="text"
+              id="id_novo_username"
+              value={novoUsuario.username}
+              onChange={(e) => setNovoUsuario(prev => ({ ...prev, username: e.target.value }))}
+              required
+            />
+          </FormRow>
+
+          <FormRow id="password" label="Senha">
+            <input
+              type="password"
+              id="id_novo_password"
+              value={novoUsuario.password}
+              onChange={(e) => setNovoUsuario(prev => ({ ...prev, password: e.target.value }))}
+              required
+            />
+          </FormRow>
+          
+          <FormRow id="confirm_password" label="Confirmar senha">
+            <input
+              type="password"
+              id="id_confirm_password"
+              value={confirmSenha}
+              onChange={(e) => setConfirmSenha(e.target.value)}
+              required
+            />
+          </FormRow>
+        </Modal>
       )}
 
     </div>

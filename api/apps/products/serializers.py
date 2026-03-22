@@ -56,4 +56,13 @@ class GrupoSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_active', 'is_staff', 'date_joined']
+        
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_active', 'is_staff', 'date_joined', 'password']
+        
+        
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        
+        user = User.objects.create_user(**validated_data)
+        return user
