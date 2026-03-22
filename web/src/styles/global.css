@@ -312,6 +312,18 @@ a {
   font-weight: 400;
   color: var(--text-inverse);
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.logo-header {
+  height: 60px;
+  width: auto;
+  max-width: min(100%, 320px);
+  display: block;
+  object-fit: contain;
+  object-position: left center;
+  vertical-align: middle;
 }
 
 .app-header__nav {
@@ -419,6 +431,7 @@ a {
    ───────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .app-header__title { font-size: 18px; }
+  .logo-header { height: 48px; max-width: 240px; }
   .app-header__inner { gap: 10px; }
   .container { padding-inline: 12px; }
 }

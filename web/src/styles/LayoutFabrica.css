@@ -29,6 +29,28 @@
   z-index: 15;
 }
 
+.nav-sidebar__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 14px 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+
+.dark .nav-sidebar__logo {
+  background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+  border-bottom-color: #334155;
+}
+
+.logo-sidebar {
+  height: 50px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
 /* Estado: sidebar fechada (desliza para esquerda) */
 #nav-sidebar.sidebar-closed {
   margin-left: -260px;

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import api from '../services/api'
+import LogoPantexSophisticated from '../assets/logo-pantex-sophisticated.svg'
+import LogoPantexIcon from '../assets/logo-pantex-icon.svg'
 import '../styles/PainelFabrica.css'
 import '../styles/LayoutFabrica.css'
 
@@ -424,6 +426,9 @@ function PainelFabrica() {
             className={sidebarAberta ? 'sidebar-open' : 'sidebar-closed'}
             aria-label="Sidebar"
           >
+            <div className="nav-sidebar__logo">
+              <img src={LogoPantexSophisticated} alt="Pantex" className="logo-sidebar" />
+            </div>
             <input
               type="search"
               id="nav-filter"
@@ -951,7 +956,10 @@ function PainelFabrica() {
       {confirmarExclusao.aberto && (
         <div className="confirm-overlay" onClick={() => setConfirmarExclusao({ aberto:false, tipo:null, id:null })}>
           <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
-            <div className="confirm-header">Confirmar Exclusão</div>
+            <div className="confirm-header">
+              <img src={LogoPantexIcon} alt="" className="logo-confirm-title" aria-hidden="true" />
+              <span>Confirmar Exclusão</span>
+            </div>
             <div className="confirm-body">Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.</div>
             <div className="confirm-footer">
               <button className="confirm-btn confirm-cancel" onClick={() => setConfirmarExclusao({ aberto:false, tipo:null, id:null })}>Cancelar</button>

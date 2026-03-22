@@ -19,7 +19,7 @@ function Estoque() {
 
   return (
     <div className="estoque-wrapper">
-      <h2 className="estoque-titulo">Estoque Disponível — Pantex</h2>
+      <h2 className="estoque-titulo">Estoque Reserva Disponível</h2>
 
       <input
         type="text"

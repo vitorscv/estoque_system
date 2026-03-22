@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Estoque from './pages/Estoque'
 import PainelFabrica from './pages/PainelFabrica'
 import LoginFabrica from './pages/LoginFabrica'
+import LogoPantexSophisticated from './assets/logo-pantex-sophisticated.svg'
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('vendedor')
@@ -35,7 +36,9 @@ function App() {
       {telaAtual !== 'login' && (
         <header className="app-header">
           <div className="app-header__inner">
-            <h1 className="app-header__title">Sistema Pantex</h1>
+            <div className="app-header__title">
+              <img src={LogoPantexSophisticated} alt="Pantex Logo" className="logo-header" />
+            </div>
 
             <nav className="app-header__nav">
               {/* Dark mode toggle */}

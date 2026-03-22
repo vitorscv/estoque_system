@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import api from '../services/api'
+import LogoPantexSophisticated from '../assets/logo-pantex-sophisticated.svg'
 import '../styles/LoginFabrica.css'
 
 export default function LoginFabrica({ mudarTela }) {
@@ -31,6 +32,7 @@ export default function LoginFabrica({ mudarTela }) {
   return (
     <div className="login-page">
       <div className="login-card">
+        <img src={LogoPantexSophisticated} alt="Pantex Logo" className="logo-login" />
         <h2 className="login-title">Pantex — Acesso à Fábrica</h2>
 
         <form onSubmit={handleLogin}>
