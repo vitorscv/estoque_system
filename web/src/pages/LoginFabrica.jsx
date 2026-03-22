@@ -1,98 +1,72 @@
 import React, { useState } from 'react'
 import api from '../services/api'
+import '../styles/LoginFabrica.css'
 
 export default function LoginFabrica({ mudarTela }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [erro, setErro] = useState('')
+  const [erro, setErro]         = useState('')
+  const [loading, setLoading]   = useState(false)
 
   const handleLogin = async (e) => {
     e.preventDefault()
     setErro('')
+    setLoading(true)
     try {
       const res = await api.post('login/', { username, password })
-      // espera { access: 'token', ... }
       const token = res.data?.access
       if (token) {
         localStorage.setItem('tokenPantex', token)
-        // usar prop para mudar a tela para fabrica
         if (mudarTela) mudarTela('fabrica')
       } else {
         setErro('Usuário ou senha incorretos!')
       }
-    } catch (err) {
+    } catch {
       setErro('Usuário ou senha incorretos!')
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: '#0a0a0a'
-    }}>
-      <div style={{
-        width: 420,
-        maxWidth: '95%',
-        background: '#2b2b2b',
-        borderRadius: 8,
-        boxShadow: '0 8px 30px rgba(0,0,0,0.6)',
-        padding: 28,
-        color: '#fff'
-      }}>
-        <h2 style={{ textAlign: 'center', margin: 0, marginBottom: 18, fontWeight: 400 }}>Pantex - Acesso à Fábrica</h2>
+    <div className="login-page">
+      <div className="login-card">
+        <h2 className="login-title">Pantex — Acesso à Fábrica</h2>
 
         <form onSubmit={handleLogin}>
-          <label style={{ display: 'block', color: '#e6eef3', marginBottom: 6, fontSize: 13 }}>Usuário</label>
+          <label className="login-label" htmlFor="login-username">Usuário</label>
           <input
+            id="login-username"
             type="text"
+            className="login-input"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              background: '#181818',
-              border: '1px solid #333',
-              borderRadius: 4,
-              color: '#fff',
-              marginBottom: 12
-            }}
             autoFocus
+            autoComplete="username"
+            required
           />
 
-          <label style={{ display: 'block', color: '#e6eef3', marginBottom: 6, fontSize: 13 }}>Senha</label>
+          <label className="login-label" htmlFor="login-password">Senha</label>
           <input
+            id="login-password"
             type="password"
+            className="login-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              background: '#181818',
-              border: '1px solid #333',
-              borderRadius: 4,
-              color: '#fff',
-              marginBottom: 16
-            }}
+            autoComplete="current-password"
+            required
           />
 
-          <button type="submit" style={{
-            width: '100%',
-            padding: '12px 14px',
-            background: '#0056b3',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 6,
-            fontWeight: 600,
-            cursor: 'pointer'
-          }}>
-            ENTRAR
+          <button
+            type="submit"
+            className="login-btn"
+            disabled={loading}
+          >
+            {loading ? 'Entrando…' : 'Entrar'}
           </button>
 
           {erro && (
-            <div style={{ marginTop: 12, color: '#ff6b6b', textAlign: 'center' }}>
+            <div className="login-error" role="alert">
               {erro}
             </div>
           )}
@@ -101,4 +75,3 @@ export default function LoginFabrica({ mudarTela }) {
     </div>
   )
 }
-

@@ -1,54 +1,91 @@
-.container {
-    max-width: 900px;
-    margin: 40px auto;
-    font-family: Arial, sans-serif;
+/* ================================================================
+   Estoque.css — Painel do Vendedor
+   Usa variáveis do design system global (global.css).
+   ================================================================ */
+
+.estoque-wrapper {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+/* Título da página */
+.estoque-titulo {
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 24px;
+  transition: color var(--transition);
+}
+
+/* Campo de busca */
+.estoque-search {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: var(--text-lg);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  transition:
+    background var(--transition),
+    color var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.estoque-search::placeholder {
+  color: var(--text-muted);
+}
+
+.estoque-search:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15);
+}
+
+/* Estilos específicos da tabela de estoque */
+.estoque-table thead th:last-child {
+  text-align: right;
+}
+
+.estoque-table td:last-child {
+  text-align: right;
+  font-weight: 700;
+  color: var(--color-primary);
+  transition: color var(--transition);
+}
+
+/* Célula "sem resultados" */
+.estoque-empty {
+  text-align: center !important;
+  padding: 32px !important;
+  color: var(--text-secondary) !important;
+  font-style: italic;
+}
+
+/* Adaptações de dark mode */
+.dark .estoque-search {
+  background: var(--bg-input);
+}
+
+.dark .estoque-table td:last-child {
+  color: var(--color-primary-light);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .estoque-wrapper {
+    margin: 16px auto;
   }
-  
-  .titulo {
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 30px;
+
+  .estoque-titulo {
+    font-size: var(--text-xl);
   }
-  
-  .tabela-estoque {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
+
+  .estoque-search {
+    font-size: var(--text-base);
   }
-  
-  .tabela-estoque th, .tabela-estoque td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .tabela-estoque th {
-    background-color: #0056b3; 
-    color: white;
-    text-transform: uppercase;
-    font-size: 14px;
-  }
-  
-  .tabela-estoque tr:hover {
-    background-color: #f8f9fa; 
-  }
-  
-.input-busca {
-    width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    box-sizing: border-box; /* Garante que a barra não vaze para fora da tela */
-    transition: all 0.3s ease;
-  }
-  
-  .input-busca:focus {
-    outline: none;
-    border-color: #0056b3;
-    box-shadow: 0 0 8px rgba(0, 86, 179, 0.2);
-  }
+}

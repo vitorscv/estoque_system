@@ -8,18 +8,14 @@ function App() {
 
   const irParaFabrica = () => {
     const token = localStorage.getItem('tokenPantex')
-    if (token) {
-      setTelaAtual('fabrica')
-    } else {
-      setTelaAtual('login')
-    }
+    setTelaAtual(token ? 'fabrica' : 'login')
   }
 
   const handleSair = () => {
     localStorage.removeItem('tokenPantex')
     setTelaAtual('login')
   }
- 
+
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('pantex_dark') === '1'
   })
@@ -37,75 +33,46 @@ function App() {
   return (
     <div>
       {telaAtual !== 'login' && (
-        <div style={{ backgroundColor: 'var(--primary, #0056b3)', color: '#fff', padding: '12px 20px', borderRadius: 6, marginBottom: 12 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-            <h1 style={{ margin: 0 }}>Sistema Pantex</h1>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <header className="app-header">
+          <div className="app-header__inner">
+            <h1 className="app-header__title">Sistema Pantex</h1>
+
+            <nav className="app-header__nav">
+              {/* Dark mode toggle */}
               <button
                 type="button"
+                className="dark-toggle"
                 onClick={() => setDarkMode(!darkMode)}
                 aria-label="Alternar modo de exibição"
-                title={darkMode ? 'Alternar para claro' : 'Alternar para escuro'}
-                style={{
-                  padding: 8,
-                  background: 'transparent',
-                  border: 'none',
-                  borderRadius: 6,
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: 8,
-                }}
-                className="dark-toggle"
+                title={darkMode ? 'Alternar para modo claro' : 'Alternar para modo escuro'}
               >
                 {darkMode ? (
-                  // Sun icon (light mode)
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="4"></circle>
-                    <path d="M12 2v2"></path>
-                    <path d="M12 20v2"></path>
-                    <path d="M4.93 4.93l1.41 1.41"></path>
-                    <path d="M17.66 17.66l1.41 1.41"></path>
-                    <path d="M2 12h2"></path>
-                    <path d="M20 12h2"></path>
-                    <path d="M4.93 19.07l1.41-1.41"></path>
-                    <path d="M17.66 6.34l1.41-1.41"></path>
+                  /* Ícone sol (claro) */
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
                   </svg>
                 ) : (
-                  // Moon icon (dark mode)
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                  /* Ícone lua (escuro) */
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                   </svg>
                 )}
               </button>
+
+              {/* Navegação entre painéis */}
               <button
                 type="button"
+                className={`app-nav-btn${telaAtual === 'vendedor' ? ' active' : ''}`}
                 onClick={() => setTelaAtual('vendedor')}
-                style={{
-                  marginRight: 8,
-                  padding: '6px 12px',
-                  backgroundColor: telaAtual === 'vendedor' ? '#0d6efd' : '#e9ecef',
-                  color: telaAtual === 'vendedor' ? '#fff' : '#000',
-                  border: 'none',
-                  borderRadius: 4,
-                  cursor: 'pointer',
-                }}
               >
                 Vendedor
               </button>
 
               <button
                 type="button"
+                className={`app-nav-btn${telaAtual === 'fabrica' ? ' active' : ''}`}
                 onClick={irParaFabrica}
-                style={{
-                  padding: '6px 12px',
-                  backgroundColor: telaAtual === 'fabrica' ? '#0d6efd' : '#e9ecef',
-                  color: telaAtual === 'fabrica' ? '#fff' : '#000',
-                  border: 'none',
-                  borderRadius: 4,
-                  cursor: 'pointer',
-                }}
               >
                 Fábrica
               </button>
@@ -113,28 +80,20 @@ function App() {
               {telaAtual === 'fabrica' && (
                 <button
                   type="button"
+                  className="app-nav-btn danger"
                   onClick={handleSair}
-                  style={{
-                    marginLeft: 12,
-                    padding: '6px 12px',
-                    backgroundColor: '#dc3545',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: 4,
-                    cursor: 'pointer',
-                  }}
                 >
                   Sair
                 </button>
               )}
-            </div>
+            </nav>
           </div>
-        </div>
+        </header>
       )}
 
       {telaAtual === 'vendedor' && <Estoque />}
       {telaAtual === 'fabrica' && <PainelFabrica />}
-      {telaAtual === 'login' && <LoginFabrica mudarTela={setTelaAtual} />}
+      {telaAtual === 'login'   && <LoginFabrica mudarTela={setTelaAtual} />}
     </div>
   )
 }

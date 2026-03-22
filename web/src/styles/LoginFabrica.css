@@ -1,0 +1,108 @@
+/* ================================================================
+   LoginFabrica.css — Tela de login do Painel da Fábrica
+   Design sempre escuro (independente do tema global).
+   ================================================================ */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #07101f;
+  padding: 16px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  padding: 32px 28px;
+  color: #f1f5f9;
+}
+
+.login-title {
+  text-align: center;
+  margin: 0 0 24px;
+  font-size: 20px;
+  font-weight: 400;
+  color: #e2e8f0;
+  letter-spacing: 0.3px;
+}
+
+/* Campos do formulário */
+.login-label {
+  display: block;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 5px;
+  color: #f1f5f9;
+  font-size: 14px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #4a9fd4;
+  box-shadow: 0 0 0 3px rgba(74, 159, 212, 0.18);
+}
+
+.login-input::placeholder {
+  color: #475569;
+}
+
+/* Botão de envio */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #0056b3;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  text-transform: uppercase;
+}
+
+.login-btn:hover {
+  background: #084298;
+}
+
+.login-btn:active {
+  transform: translateY(1px);
+}
+
+.login-btn:disabled {
+  background: #1e4080;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Mensagem de erro */
+.login-error {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: rgba(185, 28, 28, 0.15);
+  border: 1px solid rgba(185, 28, 28, 0.35);
+  border-radius: 5px;
+  color: #fca5a5;
+  font-size: 13px;
+  text-align: center;
+}
