@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 # BASE_DIR 'api'
@@ -21,6 +22,7 @@ INSTALLED_APPS = [
     # App controle de estoque
     'apps.products',
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
 ]
 
@@ -83,3 +85,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # permissão API do react 
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Django REST Framework + JWT (painel Fábrica vs Representantes)
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=8),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}

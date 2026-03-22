@@ -1,0 +1,30 @@
+/* Portal do Vendedor — extensão do LoginFabrica */
+
+.login-card--vendedor .login-title {
+  margin-bottom: 8px;
+}
+
+.login-vendedor-hint {
+  text-align: center;
+  margin: 0 0 22px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #94a3b8;
+}
+
+.login-btn-vendedor {
+  background: #166534 !important;
+  color: #f8fafc !important;
+}
+
+.login-btn-vendedor:hover:not(:disabled) {
+  background: #15803d !important;
+}
+
+.login-btn-vendedor:active:not(:disabled) {
+  background: #14532d !important;
+}
+
+.login-btn-vendedor:disabled {
+  opacity: 0.75;
+}

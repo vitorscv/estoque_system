@@ -1,10 +1,13 @@
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import Group, User
-from django.db.models import F
-
+from .permissions import (
+    PermissaoFabrica,
+    PermissaoFabricaOuRepresentanteLeituraEstoque,
+)
 from .models import CategoriaSacaria, SacoReserva, MovimentacaoEstoque
 from .serializers import (
     CategoriaSerializer,
@@ -16,34 +19,51 @@ from .serializers import (
 
 
 class CategoriaListCreateView(generics.ListCreateAPIView):
+    """Cadastro de categorias — apenas Fábrica."""
     queryset = CategoriaSacaria.objects.all().order_by('nome')
     serializer_class = CategoriaSerializer
+    permission_classes = [IsAuthenticated, PermissaoFabrica]
 
 
 class SacoReservaListView(generics.ListCreateAPIView):
+    """
+    GET: Fábrica ou Representantes (consulta).
+    POST: apenas Fábrica (novo saco).
+    """
     queryset = SacoReserva.objects.filter(ativo=True).order_by('descricao')
     serializer_class = SacoReservaSerializer
 
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [IsAuthenticated(), PermissaoFabricaOuRepresentanteLeituraEstoque()]
+        return [IsAuthenticated(), PermissaoFabrica()]
+
 
 class MovimentacaoListView(generics.ListAPIView):
+    """Histórico de movimentações — apenas Fábrica."""
     queryset = MovimentacaoEstoque.objects.select_related('saco').order_by('-data_movimentacao')
     serializer_class = MovimentacaoEstoqueSerializer
+    permission_classes = [IsAuthenticated, PermissaoFabrica]
 
 
 class GrupoListView(generics.ListAPIView):
     queryset = Group.objects.all().order_by('name')
     serializer_class = GrupoSerializer
+    permission_classes = [IsAuthenticated, PermissaoFabrica]
 
 
 class UsuarioListView(generics.ListCreateAPIView):
     queryset = User.objects.all().order_by('username')
     serializer_class = UsuarioSerializer
+    permission_classes = [IsAuthenticated, PermissaoFabrica]
 
 
 class MovimentarEstoqueView(APIView):
     """
-    Rota exclusiva para a Fábrica (Estoquista) dar entrada ou saída.
+    Entrada/saída de estoque — apenas Fábrica (representantes não lançam).
     """
+    permission_classes = [IsAuthenticated, PermissaoFabrica]
+
     def post(self, request, pk):
         saco = get_object_or_404(SacoReserva, pk=pk)
 
@@ -67,7 +87,6 @@ class MovimentarEstoqueView(APIView):
             )
 
         if tipo == 'entrada':
-            # Cria a movimentação (o seu model/signal vai fazer a soma automaticamente igual no Admin)
             MovimentacaoEstoque.objects.create(
                 saco=saco,
                 tipo='entrada',
@@ -78,14 +97,12 @@ class MovimentarEstoqueView(APIView):
             return Response({"status": "Entrada registrada com sucesso!"})
 
         elif tipo == 'saida':
-            # Apenas valida se tem saldo suficiente ANTES de criar a movimentação
             if saco.quantidade_atual < quantidade_int:
                 return Response(
                     {"erro": "Saldo insuficiente na fábrica!"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
-            # Cria a movimentação (o seu model/signal vai fazer a subtração automaticamente)
             MovimentacaoEstoque.objects.create(
                 saco=saco,
                 tipo='saida',
@@ -99,14 +116,22 @@ class MovimentarEstoqueView(APIView):
             {"erro": "Tipo de movimentação inválido."},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+
 class SacoReservaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """Detalhe/edição/exclusão de saco — apenas Fábrica (representantes só listam)."""
     queryset = SacoReserva.objects.all()
     serializer_class = SacoReservaSerializer
+    permission_classes = [IsAuthenticated, PermissaoFabrica]
+
 
 class CategoriaDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = CategoriaSacaria.objects.all()
     serializer_class = CategoriaSerializer
+    permission_classes = [IsAuthenticated, PermissaoFabrica]
+
 
 class MovimentacaoDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MovimentacaoEstoque.objects.all()
     serializer_class = MovimentacaoEstoqueSerializer
+    permission_classes = [IsAuthenticated, PermissaoFabrica]

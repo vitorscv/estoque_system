@@ -2,19 +2,29 @@ import React, { useState, useEffect } from 'react'
 import Estoque from './pages/Estoque'
 import PainelFabrica from './pages/PainelFabrica'
 import LoginFabrica from './pages/LoginFabrica'
+import LoginVendedor from './pages/LoginVendedor'
 import LogoPantexSophisticated from './assets/logo-pantex-sophisticated.svg'
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('vendedor')
+
+  const [vendedorLogado, setVendedorLogado] = useState(() =>
+    Boolean(localStorage.getItem('tokenPantexVendedor'))
+  )
 
   const irParaFabrica = () => {
     const token = localStorage.getItem('tokenPantex')
     setTelaAtual(token ? 'fabrica' : 'login')
   }
 
-  const handleSair = () => {
+  const handleSairFabrica = () => {
     localStorage.removeItem('tokenPantex')
     setTelaAtual('login')
+  }
+
+  const handleSairVendedor = () => {
+    localStorage.removeItem('tokenPantexVendedor')
+    setVendedorLogado(false)
   }
 
   const [darkMode, setDarkMode] = useState(() => {
@@ -31,9 +41,22 @@ function App() {
     }
   }, [darkMode])
 
+  useEffect(() => {
+    if (telaAtual === 'fabrica') sessionStorage.setItem('pantexContext', 'fabrica')
+    else if (telaAtual === 'vendedor') sessionStorage.setItem('pantexContext', 'vendedor')
+    else if (telaAtual === 'login') sessionStorage.setItem('pantexContext', 'fabrica')
+  }, [telaAtual])
+
+  const loginFabricaTelaCheia = telaAtual === 'login'
+  const loginVendedorTelaCheia = telaAtual === 'vendedor' && !vendedorLogado
+  const mostrarHeader = !loginFabricaTelaCheia && !loginVendedorTelaCheia
+
+  const mostrarSair =
+    telaAtual === 'fabrica' || (telaAtual === 'vendedor' && vendedorLogado)
+
   return (
     <div>
-      {telaAtual !== 'login' && (
+      {mostrarHeader && (
         <header className="app-header">
           <div className="app-header__inner">
             <div className="app-header__title">
@@ -41,7 +64,6 @@ function App() {
             </div>
 
             <nav className="app-header__nav">
-              {/* Dark mode toggle */}
               <button
                 type="button"
                 className="dark-toggle"
@@ -50,20 +72,17 @@ function App() {
                 title={darkMode ? 'Alternar para modo claro' : 'Alternar para modo escuro'}
               >
                 {darkMode ? (
-                  /* Ícone sol (claro) */
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <circle cx="12" cy="12" r="4" />
                     <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
                   </svg>
                 ) : (
-                  /* Ícone lua (escuro) */
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                   </svg>
                 )}
               </button>
 
-              {/* Navegação entre painéis */}
               <button
                 type="button"
                 className={`app-nav-btn${telaAtual === 'vendedor' ? ' active' : ''}`}
@@ -80,11 +99,11 @@ function App() {
                 Fábrica
               </button>
 
-              {telaAtual === 'fabrica' && (
+              {mostrarSair && (
                 <button
                   type="button"
                   className="app-nav-btn danger"
-                  onClick={handleSair}
+                  onClick={telaAtual === 'fabrica' ? handleSairFabrica : handleSairVendedor}
                 >
                   Sair
                 </button>
@@ -94,9 +113,12 @@ function App() {
         </header>
       )}
 
-      {telaAtual === 'vendedor' && <Estoque />}
+      {telaAtual === 'vendedor' && vendedorLogado && <Estoque />}
+      {telaAtual === 'vendedor' && !vendedorLogado && (
+        <LoginVendedor setVendedorLogado={setVendedorLogado} />
+      )}
       {telaAtual === 'fabrica' && <PainelFabrica />}
-      {telaAtual === 'login'   && <LoginFabrica mudarTela={setTelaAtual} />}
+      {telaAtual === 'login' && <LoginFabrica mudarTela={setTelaAtual} />}
     </div>
   )
 }
