@@ -3,7 +3,7 @@ import api from '../services/api'
 import LogoPantexSophisticated from '../assets/logo-pantex-sophisticated.svg'
 import '../styles/LoginFabrica.css'
 
-export default function LoginFabrica({ mudarTela }) {
+export default function LoginFabrica({ mudarTela, onLoginComoRepresentante }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [erro, setErro]         = useState('')
@@ -16,13 +16,29 @@ export default function LoginFabrica({ mudarTela }) {
     try {
       const res = await api.post('login/', { username, password })
       const token = res.data?.access
-      if (token) {
-        localStorage.setItem('tokenPantex', token)
-        if (mudarTela) mudarTela('fabrica')
-      } else {
+      if (!token) {
         setErro('Usuário ou senha incorretos!')
+        return
+      }
+      localStorage.setItem('tokenPantex', token)
+      const me = await api.get('auth/me/')
+      const { fabrica, representante } = me.data || {}
+      if (fabrica) {
+        if (mudarTela) mudarTela('fabrica')
+      } else if (representante) {
+        localStorage.removeItem('tokenPantex')
+        localStorage.setItem('tokenPantexVendedor', token)
+        sessionStorage.setItem('pantexContext', 'vendedor')
+        if (onLoginComoRepresentante) onLoginComoRepresentante()
+        if (mudarTela) mudarTela('vendedor')
+      } else {
+        localStorage.removeItem('tokenPantex')
+        setErro(
+          'Esta conta não tem permissão. Peça ao administrador para vincular o grupo Fábrica ou Representantes.'
+        )
       }
     } catch {
+      localStorage.removeItem('tokenPantex')
       setErro('Usuário ou senha incorretos!')
     } finally {
       setLoading(false)

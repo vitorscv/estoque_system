@@ -17,13 +17,23 @@ export default function LoginVendedor({ setVendedorLogado }) {
     try {
       const res = await api.post('login/', { username, password })
       const token = res.data?.access
-      if (token) {
-        localStorage.setItem('tokenPantexVendedor', token)
+      if (!token) {
+        setErro('Usuário ou senha incorretos!')
+        return
+      }
+      localStorage.setItem('tokenPantexVendedor', token)
+      const me = await api.get('auth/me/')
+      const { fabrica, representante } = me.data || {}
+      if (fabrica || representante) {
         setVendedorLogado(true)
       } else {
-        setErro('Usuário ou senha incorretos!')
+        localStorage.removeItem('tokenPantexVendedor')
+        setErro(
+          'Esta conta não tem permissão para consultar o estoque. Peça ao administrador para vincular o grupo Representantes ou Fábrica.'
+        )
       }
     } catch {
+      localStorage.removeItem('tokenPantexVendedor')
       setErro('Usuário ou senha incorretos!')
     } finally {
       setLoading(false)

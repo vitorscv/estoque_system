@@ -1,4 +1,5 @@
 from rest_framework import generics, status
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,6 +8,8 @@ from django.contrib.auth.models import Group, User
 from .permissions import (
     PermissaoFabrica,
     PermissaoFabricaOuRepresentanteLeituraEstoque,
+    usuario_e_fabrica,
+    usuario_e_representante,
 )
 from .models import CategoriaSacaria, SacoReserva, MovimentacaoEstoque
 from .serializers import (
@@ -56,6 +59,37 @@ class UsuarioListView(generics.ListCreateAPIView):
     queryset = User.objects.all().order_by('username')
     serializer_class = UsuarioSerializer
     permission_classes = [IsAuthenticated, PermissaoFabrica]
+
+
+class UsuarioDestroyView(generics.DestroyAPIView):
+    """Exclusão de usuário — apenas Fábrica."""
+
+    queryset = User.objects.all()
+    serializer_class = UsuarioSerializer
+    permission_classes = [IsAuthenticated, PermissaoFabrica]
+
+    def perform_destroy(self, instance):
+        if instance.pk == self.request.user.pk:
+            raise PermissionDenied('Não é possível excluir o próprio usuário logado.')
+        instance.delete()
+
+
+class UsuarioPerfilView(APIView):
+    """
+    Perfil do usuário autenticado (qualquer JWT válido).
+    Usado após o login para decidir portal Fábrica vs Vendedor.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response(
+            {
+                'username': user.username,
+                'representante': usuario_e_representante(user),
+                'fabrica': usuario_e_fabrica(user),
+            }
+        )
 
 
 class MovimentarEstoqueView(APIView):

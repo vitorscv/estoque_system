@@ -14,6 +14,11 @@ function tokenParaRequisicao() {
 }
 
 api.interceptors.request.use((config) => {
+    const rel = config.url || '';
+    // Login/refresh não devem enviar Bearer antigo (evita conflitos e confusão de sessão).
+    if (rel.includes('login') || rel.includes('refresh')) {
+        return config;
+    }
     const token = tokenParaRequisicao();
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;

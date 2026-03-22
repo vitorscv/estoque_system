@@ -118,7 +118,12 @@ function App() {
         <LoginVendedor setVendedorLogado={setVendedorLogado} />
       )}
       {telaAtual === 'fabrica' && <PainelFabrica />}
-      {telaAtual === 'login' && <LoginFabrica mudarTela={setTelaAtual} />}
+      {telaAtual === 'login' && (
+        <LoginFabrica
+          mudarTela={setTelaAtual}
+          onLoginComoRepresentante={() => setVendedorLogado(true)}
+        />
+      )}
     </div>
   )
 }

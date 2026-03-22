@@ -25,6 +25,13 @@ const SearchIcon = () => (
   </svg>
 )
 
+function textoPerfilUsuario(u) {
+  if (u.representante && u.fabrica) return 'Fábrica + Representante'
+  if (u.representante) return 'Representante'
+  if (u.fabrica) return 'Fábrica'
+  return '—'
+}
+
 /* ─── Componente de Tabela Reutilizável (Change List) ───────────── */
 function ChangeList({ searchPlaceholder, busca, setBusca, acaoLabel, colunas, linhas, paginator }) {
   return (
@@ -334,6 +341,7 @@ function PainelFabrica() {
     if (tipo === 'saco') endpoint = `estoque/${id}/`
     if (tipo === 'categoria') endpoint = `categorias/${id}/`
     if (tipo === 'movimentacao') endpoint = `movimentacoes/${id}/`
+    if (tipo === 'usuario') endpoint = `usuarios/${id}/`
 
     api.delete(endpoint)
       .then(res => {
@@ -341,6 +349,7 @@ function PainelFabrica() {
         if (tipo === 'saco') setSacos(prev => prev.filter(s => s.id !== id))
         if (tipo === 'categoria') setCategorias(prev => prev.filter(c => c.id !== id))
         if (tipo === 'movimentacao') setMovimentacoes(prev => prev.filter(m => m.id !== id))
+        if (tipo === 'usuario') setUsuarios(prev => prev.filter(u => u.id !== id))
         setConfirmarExclusao({ aberto: false, tipo: null, id: null })
       })
       .catch(err => {
@@ -351,7 +360,11 @@ function PainelFabrica() {
 
   /* ── Modal: Novo Usuário (aba Usuários) ─────────────────────── */ 
   const [modalUsuarioAberto, setModalUsuarioAberto] = useState(false)
-  const [novoUsuario, setNovoUsuario] = useState({ username: '', password: '' })
+  const [novoUsuario, setNovoUsuario] = useState({
+    username: '',
+    password: '',
+    eh_representante: false,
+  })
   const [confirmSenha, setConfirmSenha] = useState('')
 
   const handleSalvarUsuario = (e) => {
@@ -364,12 +377,17 @@ function PainelFabrica() {
       alert('As senhas não conferem.')
       return
     }
-    api.post('usuarios/', novoUsuario)
+    const payload = {
+      username: novoUsuario.username.trim(),
+      password: novoUsuario.password,
+      eh_representante: Boolean(novoUsuario.eh_representante),
+    }
+    api.post('usuarios/', payload)
       .then(res => {
         // espera 201 com objeto do usuário
         setUsuarios(prev => [res.data, ...prev])
         setModalUsuarioAberto(false)
-        setNovoUsuario({ username: '', password: '' })
+        setNovoUsuario({ username: '', password: '', eh_representante: false })
         setConfirmSenha('')
       })
       .catch(err => {
@@ -698,7 +716,7 @@ function PainelFabrica() {
                           onClick={(e) => {
                             e.preventDefault()
                             setModalUsuarioAberto(true)
-                            setNovoUsuario({ username: '', password: '' })
+                            setNovoUsuario({ username: '', password: '', eh_representante: false })
                           }}
                         >
                           ADICIONAR USUÁRIO
@@ -713,6 +731,7 @@ function PainelFabrica() {
                       acaoLabel="usuários"
                       colunas={[
                         { key: 'username',   label: 'Usuário',  primeiro: true },
+                        { key: 'perfil',     label: 'Perfil' },
                         { key: 'email',      label: 'E-mail' },
                         { key: 'nome_completo', label: 'Nome completo' },
                         { key: 'staff',      label: 'Equipe' },
@@ -723,6 +742,7 @@ function PainelFabrica() {
                       linhas={usuariosFiltrados.map(u => ({
                         id:            u.id,
                         username:      u.username,
+                        perfil:        textoPerfilUsuario(u),
                         email:         u.email || '-',
                         nome_completo: [u.first_name, u.last_name].filter(Boolean).join(' ') || '-',
                         staff:         u.is_staff  ? <IconSim /> : <IconNao />,
@@ -984,6 +1004,20 @@ function PainelFabrica() {
               onChange={(e) => setNovoUsuario(prev => ({ ...prev, username: e.target.value }))}
               required
             />
+          </FormRow>
+
+          <FormRow id="eh_representante" label="Perfil">
+            <label className="fabrica-checkbox-label">
+              <input
+                type="checkbox"
+                id="id_eh_representante"
+                checked={novoUsuario.eh_representante}
+                onChange={(e) =>
+                  setNovoUsuario(prev => ({ ...prev, eh_representante: e.target.checked }))
+                }
+              />
+              <span>Representante (apenas portal do vendedor — consulta de estoque)</span>
+            </label>
           </FormRow>
 
           <FormRow id="password" label="Senha">
