@@ -1,0 +1,66 @@
+
+# Python / Django
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ambientes virtuais
+.venv/
+venv/
+env/
+ENV/
+api/.venv/
+api/venv/
+
+# variáveis de ambiente
+.env
+.env.*
+api/.env
+
+# logs
+*.log
+
+# SQLite local
+db.sqlite3
+db.sqlite3-journal
+api/db.sqlite3
+api/db.sqlite3-journal
+
+# arquivos estáticos/media gerados localmente
+media/
+staticfiles/
+
+# testes / cobertura / cache
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+
+
+# Frontend / Node
+
+node_modules/
+web/node_modules/
+dist/
+build/
+coverage/
+
+# logs de gerenciadores
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# IDE / Sistema
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
