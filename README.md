@@ -1,6 +1,6 @@
  #  Sistema de Estoque Pantex
  
- Sistema completo de gerenciamento de estoque de sacarias com interface dupla: uma para vendedores (visualização) e outra para fábrica (gerenciamento completo estilo Django Admin).
+ Sistema completo de gerenciamento de estoque de sacarias, com duas interfaces integradas: uma para vendedores, focada em visualização, e outra para a fábrica, voltada ao controle operacional.
  
  ![Version](https://img.shields.io/badge/version-2.0.0-blue)
  ![Django](https://img.shields.io/badge/Django-6.0.3-green)
@@ -9,15 +9,15 @@
  
  ---
  
- ## 🌟 Características
+ ##  Características
  
- ### 👔 Modo Vendedor
- - ✅ Visualização simples do estoque
- - ✅ Busca em tempo real
- - ✅ Interface limpa e intuitiva
- - ✅ Apenas leitura
+ ###  Modo Vendedor
+ -  Visualização simples do estoque
+ -  Busca em tempo real
+ -  Interface limpa e intuitiva
+ -  Apenas leitura
  
- ### 🏭 Modo Fábrica (Painel Admin)
+ ###  Modo Fábrica (Painel Admin)
  - ✅ **Clone fiel do Django Admin** em modo escuro
  - ✅ Sidebar colapsável com navegação
  - ✅ Busca e filtros em tempo real
@@ -30,7 +30,7 @@
  
  ---
  
- ## 🚀 Início Rápido
+ ##  Início Rápido
  
  ### Pré-requisitos
  
@@ -142,7 +142,7 @@
  
  ---
  
- ## 🎯 Endpoints da API
+ ##  Endpoints da API
  
  ### Listar Sacos
  ```http
@@ -184,7 +184,7 @@
  
  ---
  
- ## 🎨 Tecnologias Utilizadas
+ ##  Tecnologias Utilizadas
  
  ### Backend
  - **Django 6.0.3** - Framework web
@@ -201,7 +201,7 @@
  
  ---
  
- ## 📱 Screenshots
+ ##  Screenshots
  
  ### Tela do Vendedor
  ```
@@ -219,9 +219,9 @@
  ### Painel Fábrica (Django Admin Clone)
  ```
  ┌─────────────────────────────────────────────┐
- │ ☰ Administração do Django    Bem-vindo, Vitor│
+ │ ☰ Administração do Django  Bem-vindo, Vitor│
  ├─────────────────────────────────────────────┤
- │ Início › Products › Saco reservas           │
+ │ Início › Saco reservas                      │
  ├───────┬─────────────────────────────────────┤
  │       │ Selecione saco reserva para alterar│
  │ Prods │ [+ Adicionar movimentação estoque]  │
@@ -240,16 +240,8 @@
  
  ---
  
- ## 🎓 Documentação
+  
  
- ### Documentos Disponíveis
- 
- - **[GUIA_RAPIDO.md](GUIA_RAPIDO.md)** - Como usar o sistema
- - **[PAINEL_FABRICA_DOCS.md](PAINEL_FABRICA_DOCS.md)** - Documentação técnica completa
- - **[COMPARACAO_VISUAL.md](COMPARACAO_VISUAL.md)** - Antes vs Depois do redesign
- - **[CHANGELOG.md](CHANGELOG.md)** - Histórico de mudanças
- 
- ---
  
  ## 🔧 Configuração
  
@@ -278,7 +270,7 @@
  CORS_ALLOW_ALL_ORIGINS = True  # Apenas para desenvolvimento!
  ```
  
- **⚠️ Produção:** Configure origins específicas:
+ ** Produção:** Configure origins específicas:
  ```python
  CORS_ALLOWED_ORIGINS = [
      "https://seu-dominio.com",
@@ -287,7 +279,7 @@
  
  ---
  
- ## 🧪 Testes
+ ##  Testes
  
  ### Backend (Django)
  
@@ -305,7 +297,7 @@
  
  ---
  
- ## 📦 Build para Produção
+ ##  Build para Produção
  
  ### Backend
  
@@ -322,42 +314,12 @@
  npm run build
  # Arquivos em: dist/
  ```
+
+ 
  
  ---
  
- ## 🤝 Contribuindo
- 
- 1. Fork o projeto
- 2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
- 3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
- 4. Push para a branch (`git push origin feature/nova-funcionalidade`)
- 5. Abra um Pull Request
- 
- ---
- 
- ## 📝 Licença
- 
- Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
- 
- ---
- 
- ## 👨‍💻 Autor
- 
- **Vitor Souza Cruz**
- - GitHub: [@vitorscv](https://github.com/vitorscv)
- - Email: [seu-email@exemplo.com]
- 
- ---
- 
- ## 🙏 Agradecimentos
- 
- - Django Software Foundation - Pelo framework incrível
- - React Team - Pela biblioteca UI
- - Comunidade Open Source
- 
- ---
- 
- ## 📊 Status do Projeto
+ ##  Status do Projeto
  
  - ✅ **Backend**: Completo e funcional
  - ✅ **Frontend Vendedor**: Completo
@@ -370,36 +332,4 @@
  
  ---
  
- ## 🔮 Próximas Funcionalidades
  
- - [ ] Sistema de autenticação completo
- - [ ] Histórico de movimentações
- - [ ] Relatórios em PDF
- - [ ] Exportação para Excel
- - [ ] Gráficos de estoque
- - [ ] Notificações de estoque baixo
- - [ ] Multi-usuários com permissões
- - [ ] Auditoria de ações
- 
- ---
- 
- ## 📞 Suporte
- 
- Encontrou um bug? Tem uma sugestão?
- 
- - 🐛 [Reportar Bug](https://github.com/vitorscv/estoque_system/issues)
- - 💡 [Sugerir Funcionalidade](https://github.com/vitorscv/estoque_system/issues)
- - 📧 Email: [seu-email@exemplo.com]
- 
- ---
- 
- ## ⭐ Star History
- 
- Se este projeto foi útil para você, considere dar uma ⭐!
- 
- ---
- 
- **Desenvolvido com ❤️ por Vitor Souza Cruz**
- 
- **Última atualização:** 20 de Março de 2026  
- **Versão:** 2.0.0
