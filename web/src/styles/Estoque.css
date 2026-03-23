@@ -1,8 +1,3 @@
-/* ================================================================
-   Estoque.css — Painel do Vendedor
-   Usa variáveis do design system global (global.css).
-   ================================================================ */
-
 .estoque-wrapper {
   max-width: 900px;
   margin: 32px auto;
@@ -46,7 +41,7 @@
   box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15);
 }
 
-/* Estilos específicos da tabela de estoque */
+
 .estoque-table thead th:last-child {
   text-align: right;
 }
@@ -58,7 +53,7 @@
   transition: color var(--transition);
 }
 
-/* Célula "sem resultados" */
+
 .estoque-empty {
   text-align: center !important;
   padding: 32px !important;
@@ -66,7 +61,7 @@
   font-style: italic;
 }
 
-/* Adaptações de dark mode */
+/*  dark mode */
 .dark .estoque-search {
   background: var(--bg-input);
 }

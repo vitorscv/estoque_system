@@ -1,14 +1,4 @@
-/* ================================================================
-   index.css — Complemento mínimo ao design system global.
-   Os estilos principais estão em styles/global.css (importado
-   antes deste arquivo via main.jsx).
-   ================================================================ */
-
-/*
-  Separador visual entre seções no App principal.
-  Mantido aqui pois é um elemento de layout de página,
-  não um componente reutilizável.
-*/
+/*  Separador visual entre seções no App principal. */
 hr {
   border: none;
   border-top: 1px solid var(--border-color);

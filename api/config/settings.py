@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure-chave-secreta-para-desenvolvimento-local'
 DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-# APLICATIVOS INSTALADOS
+# APPs INSTALADOS
 INSTALLED_APPS = [
      
     'django.contrib.admin',
@@ -67,6 +67,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': '1213',
         'HOST': 'localhost',
+        
         'PORT': '5432',
     }
 }
@@ -86,7 +87,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # permissão API do react 
 CORS_ALLOW_ALL_ORIGINS = True
 
-# Django REST Framework + JWT (painel Fábrica vs Representantes)
+# Django REST Framework + JWT 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',

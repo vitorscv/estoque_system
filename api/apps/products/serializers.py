@@ -95,8 +95,9 @@ class UsuarioSerializer(serializers.ModelSerializer):
         eh_representante = validated_data.pop('eh_representante', False)
         password = validated_data.pop('password')
         username = validated_data.pop('username')
-        # Só username + senha — evita flags indevidos (ex.: is_active=False) no create_user(**kwargs).
-        user = User.objects.create_user(username=username, password=password)
+        email = validated_data.pop('email', '') or ''
+        # username + senha 
+        user = User.objects.create_user(username=username, password=password, email=email)
         grupo_nome = GRUPO_REPRESENTANTES if eh_representante else GRUPO_FABRICA
         grupo, _ = Group.objects.get_or_create(name=grupo_nome)
         user.groups.set([grupo])

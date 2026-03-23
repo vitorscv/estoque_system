@@ -8,10 +8,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # Suas rotas do app de produtos (mantendo o prefixo vazio)
+    # rotas do app de produtos 
     path('', include('apps.products.urls')), 
     
-    # Rotas da catraca de Login (JWT)
+    # Rotas (JWT)
     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

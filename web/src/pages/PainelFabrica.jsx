@@ -5,7 +5,7 @@ import LogoPantexIcon from '../assets/logo-pantex-icon.svg'
 import '../styles/PainelFabrica.css'
 import '../styles/LayoutFabrica.css'
 
-/* ─── SVGs de status reutilizáveis ─────────────────────────────── */
+
 const IconSim = () => (
   <img
     src="data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 1792 1792' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%2370bf2b' d='M1671 566q0 40-28 68l-724 724-136 136q-28 28-68 28t-68-28l-136-136-362-362q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 295 656-657q28-28 68-28t68 28l136 136q28 28 28 68z'/%3E%3C/svg%3E"
@@ -32,7 +32,7 @@ function textoPerfilUsuario(u) {
   return '—'
 }
 
-/* ─── Componente de Tabela Reutilizável (Change List) ───────────── */
+
 function ChangeList({ searchPlaceholder, busca, setBusca, acaoLabel, colunas, linhas, paginator }) {
   return (
     <div className="module" id="changelist">
@@ -114,7 +114,7 @@ function ChangeList({ searchPlaceholder, busca, setBusca, acaoLabel, colunas, li
   )
 }
 
-/* ─── Componente de Modal Reutilizável ──────────────────────────── */
+
 function Modal({ titulo, onFechar, onSubmit, children }) {
   return (
     <div className="modal-overlay" onClick={onFechar}>
@@ -137,11 +137,16 @@ function Modal({ titulo, onFechar, onSubmit, children }) {
   )
 }
 
-function FormRow({ id, label, children, help }) {
+function FormRow({ id, label, children, help, required = true }) {
   return (
     <div className={`form-row field-${id}`}>
       <div>
-        <label htmlFor={`id_${id}`} className="required">{label}:</label>
+        <label
+          htmlFor={`id_${id}`}
+          className={required ? 'required' : ''}
+        >
+          {label}:
+        </label>
         {children}
         {help && <div className="help">{help}</div>}
       </div>
@@ -149,28 +154,28 @@ function FormRow({ id, label, children, help }) {
   )
 }
 
-/* ─── Componente Principal ──────────────────────────────────────── */
+/*  Componente Principal */
 function PainelFabrica() {
 
-  /* ── Navegação ──────────────────────────────────────────────── */
+  /*  Navegação */
   const [abaAtiva, setAbaAtiva] = useState('saco_reservas')
   const [sidebarAberta, setSidebarAberta] = useState(true)
 
-  /* ── Dados de cada aba ──────────────────────────────────────── */
+  /*  Dados de cada aba */
   const [sacos, setSacos]               = useState([])
   const [categorias, setCategorias]     = useState([])
   const [movimentacoes, setMovimentacoes] = useState([])
   const [grupos, setGrupos]             = useState([])
   const [usuarios, setUsuarios]         = useState([])
 
-  /* ── Buscas locais ──────────────────────────────────────────── */
+  /*  Buscas locais */
   const [buscaSacos, setBuscaSacos]               = useState('')
   const [buscaCategorias, setBuscaCategorias]     = useState('')
   const [buscaMovimentacoes, setBuscaMovimentacoes] = useState('')
   const [buscaGrupos, setBuscaGrupos]             = useState('')
   const [buscaUsuarios, setBuscaUsuarios]         = useState('')
 
-  /* ── Modal: Movimentação (aba Sacos) ────────────────────────── */
+  /*  Modal: Movimentação */
   const [modalMovAberto, setModalMovAberto]   = useState(false)
   const [sacoSelecionado, setSacoSelecionado] = useState('')
   const [tipoMovimentacao, setTipoMovimentacao] = useState('entrada')
@@ -178,10 +183,10 @@ function PainelFabrica() {
   const [responsavel, setResponsavel]         = useState('')
   const [observacao, setObservacao]           = useState('')
 
-  /* ── Modal: Categoria ───────────────────────────────────────── */
+  /*  Modal: Categoria */
   const [modalCatAberto, setModalCatAberto] = useState(false)
   const [nomeCategoria, setNomeCategoria]   = useState('')
-  /* ── Modal: Saco Reserva (Add Form) ─────────────────────────── */
+  /*  Modal: Saco Reserva */
   const [modalSacoAberto, setModalSacoAberto] = useState(false)
   const [codigoReferencia, setCodigoReferencia] = useState('')
   const [descricaoSaco, setDescricaoSaco] = useState('')
@@ -190,7 +195,7 @@ function PainelFabrica() {
   const [ativoSaco, setAtivoSaco] = useState(true)
   const [confirmarExclusao, setConfirmarExclusao] = useState({ aberto: false, tipo: null, id: null })
 
-  /* ── Carregamento de dados ──────────────────────────────────── */
+  /*  Carregamento de dados */
   const carregarSacos = () =>
     api.get('estoque/').then(r => setSacos(r.data)).catch(console.error)
 
@@ -206,10 +211,10 @@ function PainelFabrica() {
   const carregarUsuarios = () =>
     api.get('usuarios/').then(r => setUsuarios(r.data)).catch(console.error)
 
-  /* Carrega sacos ao montar (aba padrão) */
+  
   useEffect(() => { carregarSacos() }, [])
 
-  /* Carrega os dados de uma aba quando ela é selecionada pela 1ª vez */
+  /* Carrega os dados ao selecionar-la*/
   useEffect(() => {
     if (abaAtiva === 'categorias'   && categorias.length === 0)   carregarCategorias()
     if (abaAtiva === 'movimentacoes' && movimentacoes.length === 0) carregarMovimentacoes()
@@ -217,7 +222,7 @@ function PainelFabrica() {
     if (abaAtiva === 'usuarios'     && usuarios.length === 0)      carregarUsuarios()
   }, [abaAtiva])
 
-  /* ── Filtros derivados ──────────────────────────────────────── */
+  /*  Filtros derivados */
   const sacosFiltrados = sacos.filter(s =>
     s.descricao.toLowerCase().includes(buscaSacos.toLowerCase()) ||
     (s.categoria_nome || '').toLowerCase().includes(buscaSacos.toLowerCase())
@@ -241,13 +246,13 @@ function PainelFabrica() {
     (u.email || '').toLowerCase().includes(buscaUsuarios.toLowerCase())
   )
 
-  /* ── Helpers de data ─────────────────────────────────────────── */
+ 
   const formatarData = (iso) => {
     if (!iso) return '-'
     return new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
   }
 
-  /* ── Submit: Movimentação ────────────────────────────────────── */
+  /*  Submit: Movimentação */
   const handleSubmitMov = (e) => {
     e.preventDefault()
     if (!sacoSelecionado || !quantidade || parseInt(quantidade) <= 0) {
@@ -263,14 +268,14 @@ function PainelFabrica() {
     .then(res => {
       alert(res.data.status)
       carregarSacos()
-      /* Recarrega movimentações se a aba estiver visível */
+      /* Recarrega movimentações */
       if (abaAtiva === 'movimentacoes') carregarMovimentacoes()
       setModalMovAberto(false)
     })
     .catch(err => alert(err.response?.data?.erro || 'Erro ao movimentar o estoque.'))
   }
 
-  /* ── Submit: Categoria ───────────────────────────────────────── */
+  /*  Submit: Categoria */
   const handleSubmitCat = (e) => {
     e.preventDefault()
     if (!nomeCategoria.trim()) {
@@ -290,7 +295,7 @@ function PainelFabrica() {
     })
   }
 
-  /* ── Submit: Saco Reserva (Create) ───────────────────────────── */ 
+  /*  Submit: Saco Reserva */ 
   const handleSubmitSaco = (e) => {
     e.preventDefault()
     if (!descricaoSaco.trim()) {
@@ -305,7 +310,7 @@ function PainelFabrica() {
       estoque_minimo: estoqueMinimo || 0,
       ativo: ativoSaco,
     }
-    // TODO: backend deve expor POST /api/estoque/ para criação; se não existir, retorna 405.
+    // backend deve expor POST /api/estoque/ pelo contrario retorna 405.
     api.post('estoque/', payload)
       .then(() => {
         alert('Saco reserva criado com sucesso!')
@@ -317,7 +322,7 @@ function PainelFabrica() {
       })
   }
 
-  /* ── Deleção: Saco / Categoria / Movimentacao ────────────────── */ 
+  /*  Deleção: Saco / Categoria / Movimentacao */ 
   const handleDeleteSaco = (id) => {
     setConfirmarExclusao({ aberto: true, tipo: 'saco', id })
   }
@@ -345,7 +350,7 @@ function PainelFabrica() {
 
     api.delete(endpoint)
       .then(res => {
-        // remove from UI regardless of exact status code
+      
         if (tipo === 'saco') setSacos(prev => prev.filter(s => s.id !== id))
         if (tipo === 'categoria') setCategorias(prev => prev.filter(c => c.id !== id))
         if (tipo === 'movimentacao') setMovimentacoes(prev => prev.filter(m => m.id !== id))
@@ -358,10 +363,11 @@ function PainelFabrica() {
       })
   }
 
-  /* ── Modal: Novo Usuário (aba Usuários) ─────────────────────── */ 
+  /*  Modal: Novo Usuário */ 
   const [modalUsuarioAberto, setModalUsuarioAberto] = useState(false)
   const [novoUsuario, setNovoUsuario] = useState({
     username: '',
+    email: '',
     password: '',
     eh_representante: false,
   })
@@ -379,15 +385,16 @@ function PainelFabrica() {
     }
     const payload = {
       username: novoUsuario.username.trim(),
+      email: novoUsuario.email.trim() || '',
       password: novoUsuario.password,
       eh_representante: Boolean(novoUsuario.eh_representante),
     }
     api.post('usuarios/', payload)
       .then(res => {
-        // espera 201 com objeto do usuário
+        
         setUsuarios(prev => [res.data, ...prev])
         setModalUsuarioAberto(false)
-        setNovoUsuario({ username: '', password: '', eh_representante: false })
+        setNovoUsuario({ username: '', email: '', password: '', eh_representante: false })
         setConfirmSenha('')
       })
       .catch(err => {
@@ -395,7 +402,7 @@ function PainelFabrica() {
       })
   }
 
-  /* ── Helpers de navegação ────────────────────────────────────── */
+  /*  Helpers de navegação */
   const irPara = (aba) => setAbaAtiva(aba)
 
   const titulos = {
@@ -416,20 +423,20 @@ function PainelFabrica() {
 
   const bc = breadcrumbs[abaAtiva]
 
-  /* ─────────────────────────────────────────────────────────────── */
+ 
   return (
     <div className="django-admin">
       <a href="#content-start" className="skip-to-content">Pular para o conteúdo principal</a>
 
       <div id="container">
 
-        {/* cabeçalho removido (adaptado para Pantex) */}
+        {}
 
-        {/* breadcrumbs removido conforme solicitado */}
+        {}
 
         <div className="main" id="main">
 
-          {/* ── Toggle Sidebar ───────────────────────────────────── */}
+          {/*  Toggle Sidebar */}
           <button
             className="toggle-nav-sidebar"
             onClick={() => setSidebarAberta(!sidebarAberta)}
@@ -438,7 +445,7 @@ function PainelFabrica() {
             ☰
           </button>
 
-          {/* ── Sidebar ──────────────────────────────────────────── */}
+          {/*  Sidebar */}
           <nav
             id="nav-sidebar"
             className={sidebarAberta ? 'sidebar-open' : 'sidebar-closed'}
@@ -500,16 +507,14 @@ function PainelFabrica() {
             </div>
           </nav>
 
-          {/* ── Conteúdo Principal ───────────────────────────────── */}
+          {/*  Conteúdo Principal */}
           <main id="content-start" className="content" tabIndex="-1">
             <div id="content" className="colM">
               <h1>{titulos[abaAtiva]}</h1>
 
               <div id="content-main">
 
-                {/* ════════════════════════════════════════════════
-                    ABA: SACO RESERVAS
-                ════════════════════════════════════════════════ */}
+                { }
                 {abaAtiva === 'saco_reservas' && (
                   <div>
                     <div className="toolbar-header">
@@ -569,9 +574,7 @@ function PainelFabrica() {
                   </div>
                 )}
 
-                {/* ════════════════════════════════════════════════
-                    ABA: MOVIMENTAÇÕES
-                ════════════════════════════════════════════════ */}
+                {/*  ABA: MOVIMENTAÇÕES */}
                 {abaAtiva === 'movimentacoes' && (
                   <div>
                     <div className="toolbar-header">
@@ -631,9 +634,7 @@ function PainelFabrica() {
                   </div>
                 )}
 
-                {/* ════════════════════════════════════════════════
-                    ABA: CATEGORIAS
-                ════════════════════════════════════════════════ */}
+                {/*  ABA: CATEGORIAS */}
                 {abaAtiva === 'categorias' && (
                   <div>
                     <div className="toolbar-header">
@@ -683,9 +684,7 @@ function PainelFabrica() {
                   </div>
                 )}
 
-                {/* ════════════════════════════════════════════════
-                    ABA: GRUPOS
-                ════════════════════════════════════════════════ */}
+                {/*  ABA: GRUPOS */}
                 {abaAtiva === 'grupos' && (
                   <ChangeList
                     searchPlaceholder="Pesquisar grupo"
@@ -703,9 +702,7 @@ function PainelFabrica() {
                   />
                 )}
 
-                {/* ════════════════════════════════════════════════
-                    ABA: USUÁRIOS
-                ════════════════════════════════════════════════ */}
+                {/*  ABA: USUÁRIOS */}
                 {abaAtiva === 'usuarios' && (
                   <>
                     <ul className="object-tools">
@@ -716,7 +713,7 @@ function PainelFabrica() {
                           onClick={(e) => {
                             e.preventDefault()
                             setModalUsuarioAberto(true)
-                            setNovoUsuario({ username: '', password: '', eh_representante: false })
+                            setNovoUsuario({ username: '', email: '', password: '', eh_representante: false })
                           }}
                         >
                           ADICIONAR USUÁRIO
@@ -769,9 +766,7 @@ function PainelFabrica() {
         </div>
       </div>
 
-      {/* ════════════════════════════════════════════════════════════
-          MODAL: MOVIMENTAÇÃO DE ESTOQUE
-      ════════════════════════════════════════════════════════════ */}
+      {/*  MODAL: MOVIMENTAÇÃO DE ESTOQUE */}
       {modalMovAberto && (
         <Modal
           titulo="Adicionar movimentação estoque"
@@ -839,9 +834,7 @@ function PainelFabrica() {
         </Modal>
       )}
 
-      {/* ════════════════════════════════════════════════════════════
-          MODAL: NOVA CATEGORIA
-      ════════════════════════════════════════════════════════════ */}
+      {/*  MODAL: NOVA CATEGORIA */}
       {modalCatAberto && (
         <Modal
           titulo="Adicionar categoria sacaria"
@@ -862,7 +855,7 @@ function PainelFabrica() {
         </Modal>
       )}
 
-      {/* MODAL: ADICIONAR SACO RESERVA - FORM ADD */}
+      {}
       {modalSacoAberto && (
         <div className="modal-overlay" onClick={() => setModalSacoAberto(false)}>
           <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
@@ -972,7 +965,7 @@ function PainelFabrica() {
         </div>
       )}
       
-      {/* MODAL: CONFIRMAÇÃO DE EXCLUSÃO */}
+      {}
       {confirmarExclusao.aberto && (
         <div className="confirm-overlay" onClick={() => setConfirmarExclusao({ aberto:false, tipo:null, id:null })}>
           <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
@@ -989,7 +982,7 @@ function PainelFabrica() {
         </div>
       )}
       
-      {/* MODAL: NOVO USUÁRIO */}
+      { }
       {modalUsuarioAberto && (
         <Modal
           titulo="Adicionar usuário"
@@ -1003,6 +996,21 @@ function PainelFabrica() {
               value={novoUsuario.username}
               onChange={(e) => setNovoUsuario(prev => ({ ...prev, username: e.target.value }))}
               required
+            />
+          </FormRow>
+
+          <FormRow
+            id="email"
+            label="E-mail"
+            help="Opcional"
+            required={false}
+          >
+            <input
+              type="email"
+              id="id_email"
+              value={novoUsuario.email}
+              onChange={(e) => setNovoUsuario(prev => ({ ...prev, email: e.target.value }))}
+              placeholder="email@exemplo.com"
             />
           </FormRow>
 

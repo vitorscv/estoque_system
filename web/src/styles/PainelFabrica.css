@@ -68,9 +68,7 @@
   --object-tools-hover-bg: #084298;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   2. VARIÁVEIS — TEMA ESCURO
-   ───────────────────────────────────────────────────────────────── */
+/*  VARIÁVEIS — TEMA ESCURO */
 .dark .django-admin {
   --primary:    #79aec8;
   --secondary:  #417690;
@@ -100,13 +98,15 @@
   --button-bg:             #205067;
   --button-hover-bg:       #2c5f7a;
 
+  /* Botão "Cancelar" do modal: manter contraste no tema escuro. */
+  --close-button-bg:        #475569;
+  --close-button-hover-bg:  #64748b;
+
   --object-tools-bg:       #333;
   --object-tools-hover-bg: #444;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   3. TRANSIÇÕES SUAVES (tema)
-   ───────────────────────────────────────────────────────────────── */
+/*  TRANSIÇÕES SUAVES  */
 .django-admin,
 .django-admin * {
   transition:
@@ -115,9 +115,7 @@
     border-color 0.28s ease;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   4. ACESSIBILIDADE
-   ───────────────────────────────────────────────────────────────── */
+/*  ACESSIBILIDADE */
 .skip-to-content {
   position: absolute;
   top: -999px;
@@ -129,9 +127,7 @@
   left: 0;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   5. SIDEBAR
-   ───────────────────────────────────────────────────────────────── */
+/*  SIDEBAR */
 #nav-filter {
   width: 100%;
   box-sizing: border-box;
@@ -209,9 +205,7 @@
 }
 .toggle-nav-sidebar:hover { background-color: var(--darkened-bg); }
 
-/* ─────────────────────────────────────────────────────────────────
-   6. ÁREA DE CONTEÚDO
-   ───────────────────────────────────────────────────────────────── */
+/*  ÁREA DE CONTEÚDO */
 #content h1 {
   margin: 0 0 16px;
   font-weight: 300;
@@ -223,9 +217,7 @@
   width: 100%;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   7. OBJECT-TOOLS (botão "Adicionar")
-   ───────────────────────────────────────────────────────────────── */
+/*  OBJECT-TOOLS  */
 .object-tools {
   float: right;
   margin: 0;
@@ -260,9 +252,7 @@
   font-weight: 700;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   8. CHANGELIST (barra de busca + tabela)
-   ───────────────────────────────────────────────────────────────── */
+/*  CHANGELIST */
 #changelist {
   display: flex;
   flex-direction: column;
@@ -337,7 +327,7 @@
   background: var(--button-hover-bg);
 }
 
-/* Barra de ações (ação em lote) */
+/* Barra de ações */
 .actions {
   display: flex;
   align-items: center;
@@ -375,9 +365,7 @@
 }
 .actions .button:hover { background: var(--button-hover-bg); }
 
-/* ─────────────────────────────────────────────────────────────────
-   9. TABELA DE RESULTADOS (#result_list)
-   ───────────────────────────────────────────────────────────────── */
+/*  TABELA DE RESULTADOS */
 #result_list {
   width: 100%;
   border-collapse: collapse;
@@ -456,7 +444,7 @@ input[type="checkbox"] {
 
 .fabrica-checkbox-label {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   cursor: pointer;
   font-weight: normal;
@@ -465,13 +453,22 @@ input[type="checkbox"] {
 }
 
 .fabrica-checkbox-label input[type="checkbox"] {
-  margin-top: 3px;
+  margin-top: 0;
   flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  display: inline-block;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   10. PAGINADOR
-   ───────────────────────────────────────────────────────────────── */
+.fabrica-checkbox-label span {
+  display: inline-block;
+  margin-top: 0;
+  line-height: 1.45;
+  vertical-align: middle;
+}
+
+/*  PAGINADOR */
 .paginator {
   font-size: 13px;
   padding: 12px 0;
@@ -479,9 +476,7 @@ input[type="checkbox"] {
   text-align: left;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   11. MODAL DE FORMULÁRIO
-   ───────────────────────────────────────────────────────────────── */
+/*  MODAL DE FORMULÁRIO */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -558,6 +553,7 @@ fieldset.module.aligned { padding: 28px; }
 }
 
 .form-row input[type="text"],
+.form-row input[type="email"],
 .form-row input[type="number"],
 .form-row input[type="password"],
 .form-row select {
@@ -583,7 +579,7 @@ fieldset.module.aligned { padding: 28px; }
   font-style: italic;
 }
 
-/* Barra de ações do modal (submit) */
+/* Barra de ações do modal */
 .submit-row {
   padding: 18px 28px;
   background: var(--darkened-bg);
@@ -613,9 +609,7 @@ fieldset.module.aligned { padding: 28px; }
 .submit-row .cancel-link { background: var(--close-button-bg); color: var(--body-fg); }
 .submit-row .cancel-link:hover { background: var(--close-button-hover-bg); }
 
-/* ─────────────────────────────────────────────────────────────────
-   12. ÍCONE DE AÇÃO (botão lixeira nas linhas da tabela)
-   ───────────────────────────────────────────────────────────────── */
+/*  ÍCONE DE AÇÃO */
 .action-icon {
   background: none;
   border: none;
@@ -633,9 +627,7 @@ fieldset.module.aligned { padding: 28px; }
   background: rgba(220, 53, 69, 0.08);
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   13. MODAL DE CONFIRMAÇÃO DE EXCLUSÃO
-   ───────────────────────────────────────────────────────────────── */
+/*  MODAL DE CONFIRMAÇÃO DE EXCLUSÃO */
 .confirm-overlay {
   position: fixed;
   inset: 0;
@@ -703,9 +695,7 @@ fieldset.module.aligned { padding: 28px; }
 .confirm-delete { background: #991b1b; color: #fff; }
 .confirm-delete:hover { background: #b91c1c; }
 
-/* ─────────────────────────────────────────────────────────────────
-   14. RESPONSIVIDADE
-   ───────────────────────────────────────────────────────────────── */
+/*  RESPONSIVIDADE */
 @media (max-width: 768px) {
   #content h1 { font-size: 20px; }
 

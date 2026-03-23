@@ -1,12 +1,4 @@
-/* ================================================================
-   LayoutFabrica.css — Layout responsivo do Painel da Fábrica
-   Gerencia a estrutura de duas colunas (sidebar + conteúdo),
-   breakpoints e regras de espaçamento de layout.
-   ================================================================ */
-
-/* ─────────────────────────────────────────────────────────────────
-   1. ESTRUTURA PRINCIPAL (sidebar + content)
-   ───────────────────────────────────────────────────────────────── */
+/*  ESTRUTURA PRINCIPAL  */
 .main {
   display: flex;
   align-items: flex-start;
@@ -15,9 +7,7 @@
   overflow-x: hidden;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   2. SIDEBAR
-   ───────────────────────────────────────────────────────────────── */
+/*  SIDEBAR */
 #nav-sidebar {
   flex: 0 0 260px;
   width: 260px;
@@ -51,19 +41,17 @@
   object-position: center;
 }
 
-/* Estado: sidebar fechada (desliza para esquerda) */
+/* sidebar fechada */
 #nav-sidebar.sidebar-closed {
   margin-left: -260px;
 }
 
-/* Estado: sidebar aberta */
+/* sidebar aberta */
 #nav-sidebar.sidebar-open {
   margin-left: 0;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   3. CONTEÚDO PRINCIPAL
-   ───────────────────────────────────────────────────────────────── */
+/*  CONTEÚDO PRINCIPAL */
 .content {
   flex: 1;
   padding: 20px 32px;
@@ -73,9 +61,7 @@
   overflow-x: hidden;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   4. TOOLBAR (barra pesquisa + botão adicionar)
-   ───────────────────────────────────────────────────────────────── */
+/*  TOOLBAR  */
 .toolbar-header {
   display: flex;
   flex-wrap: wrap;
@@ -84,15 +70,13 @@
   margin-bottom: 12px;
 }
 
-/* Quando a toolbar contém o changelist, ele cresce para ocupar o espaço */
+/* toolbar contém o changelist */
 .toolbar-header > #changelist {
   flex: 1;
   min-width: 0;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   5. TABELA RESPONSIVA
-   ───────────────────────────────────────────────────────────────── */
+/*  TABELA RESPONSIVA */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -101,12 +85,12 @@
   border-radius: 6px;
 }
 
-/* Força largura mínima para a tabela não comprimir demais */
+
 #result_list {
   min-width: 640px;
 }
 
-/* Altura e espaçamento padrão das células */
+
 #result_list tbody td,
 #result_list tbody th {
   height: 46px;
@@ -115,14 +99,12 @@
   vertical-align: middle;
 }
 
-/* Utilitários de alinhamento de tabela */
+
 .text-right  { text-align: right; }
 .text-center { text-align: center; }
 .font-bold   { font-weight: 700; }
 
-/* ─────────────────────────────────────────────────────────────────
-   6. OBJECT-TOOLS dentro de toolbar
-   ───────────────────────────────────────────────────────────────── */
+/*  OBJECT-TOOLS dentro de toolbar */
 .toolbar-header .object-tools {
   float: none;
   display: flex;
@@ -132,9 +114,7 @@
   margin: 0;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   7. BREAKPOINTS RESPONSIVOS
-   ───────────────────────────────────────────────────────────────── */
+/*  BREAKPOINTS RESPONSIVOS */
 @media (max-width: 1024px) {
   .content {
     padding: 20px 18px;

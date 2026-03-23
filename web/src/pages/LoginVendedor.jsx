@@ -45,7 +45,7 @@ export default function LoginVendedor({ setVendedorLogado }) {
       <div className="login-card login-card--vendedor">
         <img src={LogoPantexSophisticated} alt="Pantex Logo" className="logo-login" />
         <h2 className="login-title">Pantex — Portal do Vendedor</h2>
-        <p className="login-vendedor-hint">Acesso exclusivo à área comercial e consulta de estoque.</p>
+        <p className="login-vendedor-hint">Acesso exclusivo à área de consulta do estoque de reserva.</p>
 
         <form onSubmit={handleLogin}>
           <label className="login-label" htmlFor="login-vendedor-username">Usuário</label>

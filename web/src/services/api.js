@@ -15,7 +15,7 @@ function tokenParaRequisicao() {
 
 api.interceptors.request.use((config) => {
     const rel = config.url || '';
-    // Login/refresh não devem enviar Bearer antigo (evita conflitos e confusão de sessão).
+    // Login/refresh 
     if (rel.includes('login') || rel.includes('refresh')) {
         return config;
     }
