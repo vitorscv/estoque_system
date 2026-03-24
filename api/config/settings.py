@@ -1,5 +1,6 @@
 from datetime import timedelta
 from pathlib import Path
+import os 
 
 # BASE_DIR 'api'
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,16 +60,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+
+
 # BANCO DE DADOS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'estoque_system',
-        'USER': 'postgres',
-        'PASSWORD': '1213',
-        'HOST': 'localhost',
         
-        'PORT': '5432',
+        'NAME': os.environ.get('DB_NAME', 'estoque_system'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', '1213'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 

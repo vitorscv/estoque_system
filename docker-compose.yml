@@ -1,0 +1,49 @@
+services:
+  # 1. O MOTOR DO BANCO DE DADOS
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=estoque_system
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1213
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. O SEU BACK-END (DJANGO)
+  backend:
+    build: ./api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/app
+    environment:
+      - DEBUG=True
+      - ALLOWED_HOSTS=*
+      # Essas variáveis conectam com o banco db aí de cima
+      - DB_NAME=estoque_system
+      - DB_USER=postgres
+      - DB_PASSWORD=1213
+      - DB_HOST=db
+      - DB_PORT=5432
+    depends_on:
+      - db
+
+  # 3. O SEU FRONT-END (REACT/VITE)
+  frontend:
+    build: ./web
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+# Isso aqui salva os dados do banco para não sumirem quando desligar o Docker
+volumes:
+  postgres_data:
