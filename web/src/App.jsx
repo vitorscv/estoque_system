@@ -25,6 +25,7 @@ function App() {
   const handleSairVendedor = () => {
     localStorage.removeItem('tokenPantexVendedor')
     setVendedorLogado(false)
+    setTelaAtual('vendedor')
   }
 
   const [darkMode, setDarkMode] = useState(() => {
@@ -121,7 +122,7 @@ function App() {
       {telaAtual === 'login' && (
         <LoginFabrica
           mudarTela={setTelaAtual}
-          onLoginComoRepresentante={() => setVendedorLogado(true)}
+          onLoginComoRepresentante={() => { setVendedorLogado(true); setTelaAtual('vendedor'); }}
         />
       )}
     </div>
