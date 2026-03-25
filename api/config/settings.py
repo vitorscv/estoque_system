@@ -21,7 +21,7 @@ ALLOWED_HOSTS = allowed_hosts_str.split(',')
 
 # APPs INSTALADOS
 INSTALLED_APPS = [
-     
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -99,6 +99,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # permissão API do react 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Django REST Framework + JWT 
 REST_FRAMEWORK = {
