@@ -6,28 +6,52 @@ import LoginVendedor from './pages/LoginVendedor'
 import LogoPantexSophisticated from './assets/logo-pantex-sophisticated.svg'
 
 function App() {
-  const [telaAtual, setTelaAtual] = useState('vendedor')
+  // 1. O Estado inicial do Vendedor:
+  const [vendedorLogado, setVendedorLogado] = useState(() => {
+    return !!localStorage.getItem('tokenPantexVendedor');
+  });
 
-  const [vendedorLogado, setVendedorLogado] = useState(() =>
-    Boolean(localStorage.getItem('tokenPantexVendedor'))
-  )
+  // 2. O Estado inicial da Fábrica:
+  const [fabricaLogada, setFabricaLogada] = useState(() => {
+    return !!localStorage.getItem('tokenPantex');
+  });
 
+  // 3. A lógica inicial de qual tela mostrar (NUNCA mostra o estoque direto se não tiver token)
+  const [telaAtual, setTelaAtual] = useState(() => {
+    if (localStorage.getItem('tokenPantexVendedor')) return 'vendedor';
+    if (localStorage.getItem('tokenPantex')) return 'fabrica';
+    return 'login'; 
+  });
+
+  // 4. Funções de Navegação e Logout
   const irParaFabrica = () => {
-    const token = localStorage.getItem('tokenPantex')
-    setTelaAtual(token ? 'fabrica' : 'login')
-  }
+
+    // Pegamos especificamente o token de administrador/fábrica
+    const tokenFabrica = localStorage.getItem('tokenPantex');
+    
+    if (tokenFabrica) {
+      setFabricaLogada(true);
+      setTelaAtual('fabrica');
+    } else {
+      
+      setFabricaLogada(false);
+      setTelaAtual('login'); 
+    }
+  };
 
   const handleSairFabrica = () => {
-    localStorage.removeItem('tokenPantex')
-    setTelaAtual('login')
-  }
+    localStorage.removeItem('tokenPantex');
+    setFabricaLogada(false);
+    setTelaAtual('login'); 
+  };
 
   const handleSairVendedor = () => {
-    localStorage.removeItem('tokenPantexVendedor')
-    setVendedorLogado(false)
-    setTelaAtual('vendedor')
-  }
+    localStorage.removeItem('tokenPantexVendedor');
+    setVendedorLogado(false);
+    setTelaAtual('vendedor'); // Mantém na aba vendedor, mas vai mostrar o LoginVendedor
+  };
 
+  // Dark Mode e Controle de Sessão
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('pantex_dark') === '1'
   })
@@ -48,12 +72,12 @@ function App() {
     else if (telaAtual === 'login') sessionStorage.setItem('pantexContext', 'fabrica')
   }, [telaAtual])
 
+  // Controle de exibição do Header
   const loginFabricaTelaCheia = telaAtual === 'login'
   const loginVendedorTelaCheia = telaAtual === 'vendedor' && !vendedorLogado
   const mostrarHeader = !loginFabricaTelaCheia && !loginVendedorTelaCheia
 
-  const mostrarSair =
-    telaAtual === 'fabrica' || (telaAtual === 'vendedor' && vendedorLogado)
+  const mostrarSair = telaAtual === 'fabrica' || (telaAtual === 'vendedor' && vendedorLogado)
 
   return (
     <div>
@@ -87,7 +111,9 @@ function App() {
               <button
                 type="button"
                 className={`app-nav-btn${telaAtual === 'vendedor' ? ' active' : ''}`}
-                onClick={() => setTelaAtual('vendedor')}
+                onClick={() => {
+                  setTelaAtual('vendedor');
+                }}
               >
                 Vendedor
               </button>
@@ -114,15 +140,29 @@ function App() {
         </header>
       )}
 
+      {/* RENDERIZAÇÃO CONDICIONAL BLINDADA */}
+      
+      {/* VENDEDOR */}
       {telaAtual === 'vendedor' && vendedorLogado && <Estoque />}
       {telaAtual === 'vendedor' && !vendedorLogado && (
-        <LoginVendedor setVendedorLogado={setVendedorLogado} />
+        <LoginVendedor 
+          setVendedorLogado={setVendedorLogado} 
+          mudarTela={setTelaAtual} 
+        />
       )}
-      {telaAtual === 'fabrica' && <PainelFabrica />}
+      
+      {/* FÁBRICA */}
+      {telaAtual === 'fabrica' && fabricaLogada && <PainelFabrica />}
+      
+      {/* LOGIN GERAL DA FÁBRICA */}
       {telaAtual === 'login' && (
         <LoginFabrica
           mudarTela={setTelaAtual}
-          onLoginComoRepresentante={() => { setVendedorLogado(true); setTelaAtual('vendedor'); }}
+          setFabricaLogada={setFabricaLogada}
+          onLoginComoRepresentante={() => { 
+            setVendedorLogado(true); 
+            setTelaAtual('vendedor'); 
+          }}
         />
       )}
     </div>

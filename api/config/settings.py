@@ -1,14 +1,23 @@
 from datetime import timedelta
 from pathlib import Path
 import os 
+from dotenv import load_dotenv  
 
 # BASE_DIR 'api'
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'django-insecure-chave-secreta-para-desenvolvimento-local'
-DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+load_dotenv(BASE_DIR / '.env')
+
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+
+allowed_hosts_str = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost')
+ALLOWED_HOSTS = allowed_hosts_str.split(',')
 
 # APPs INSTALADOS
 INSTALLED_APPS = [

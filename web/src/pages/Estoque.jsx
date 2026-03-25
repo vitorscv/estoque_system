@@ -9,9 +9,14 @@ function Estoque() {
   useEffect(() => {
     api.get('estoque/')
       .then(r => setSacos(r.data))
-      .catch(err => console.error('Erro ao carregar estoque:', err))
+      .catch(err => {
+        console.error('Erro ao carregar estoque:', err);
+        if (err.response && err.response.status === 401) {
+          localStorage.removeItem('tokenPantexVendedor');
+          window.location.reload();
+        }
+      })
   }, [])
-
   const sacosFiltrados = sacos.filter(saco =>
     saco.descricao.toLowerCase().includes(busca.toLowerCase()) ||
     (saco.categoria_nome || '').toLowerCase().includes(busca.toLowerCase())

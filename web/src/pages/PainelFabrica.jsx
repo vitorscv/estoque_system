@@ -196,20 +196,28 @@ function PainelFabrica() {
   const [confirmarExclusao, setConfirmarExclusao] = useState({ aberto: false, tipo: null, id: null })
 
   /*  Carregamento de dados */
+  const interceptarErro = (err) => {
+    console.error('Erro na requisição:', err);
+    if (err.response && err.response.status === 401) {
+      localStorage.removeItem('tokenPantex');
+      window.location.reload();
+    }
+  };
+
   const carregarSacos = () =>
-    api.get('estoque/').then(r => setSacos(r.data)).catch(console.error)
+    api.get('estoque/').then(r => setSacos(r.data)).catch(interceptarErro)
 
   const carregarCategorias = () =>
-    api.get('categorias/').then(r => setCategorias(r.data)).catch(console.error)
+    api.get('categorias/').then(r => setCategorias(r.data)).catch(interceptarErro)
 
   const carregarMovimentacoes = () =>
-    api.get('movimentacoes/').then(r => setMovimentacoes(r.data)).catch(console.error)
+    api.get('movimentacoes/').then(r => setMovimentacoes(r.data)).catch(interceptarErro)
 
   const carregarGrupos = () =>
-    api.get('grupos/').then(r => setGrupos(r.data)).catch(console.error)
+    api.get('grupos/').then(r => setGrupos(r.data)).catch(interceptarErro)
 
   const carregarUsuarios = () =>
-    api.get('usuarios/').then(r => setUsuarios(r.data)).catch(console.error)
+    api.get('usuarios/').then(r => setUsuarios(r.data)).catch(interceptarErro)
 
   
   useEffect(() => { carregarSacos() }, [])
