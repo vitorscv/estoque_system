@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware', 
     'django.middleware.common.CommonMiddleware',
@@ -114,7 +115,11 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 # Configurações para o Deploy no Railway
-CSRF_TRUSTED_ORIGINS = ["https://estoquesystem-production.up.railway.app"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://estoquesystem-production.up.railway.app",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Configuração de arquivos estáticos
