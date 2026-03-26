@@ -20,7 +20,7 @@ function App() {
   const [telaAtual, setTelaAtual] = useState(() => {
     if (localStorage.getItem('tokenPantexVendedor')) return 'vendedor';
     if (localStorage.getItem('tokenPantex')) return 'fabrica';
-    return 'login'; 
+    return 'vendedor'; 
   });
 
   // 4. Funções de Navegação e Logout

@@ -3,7 +3,7 @@ import api from '../services/api'
 import LogoPantexSophisticated from '../assets/logo-pantex-sophisticated.svg'
 import '../styles/LoginFabrica.css'
 
-export default function LoginFabrica({ mudarTela, onLoginComoRepresentante }) {
+export default function LoginFabrica({ mudarTela, setFabricaLogada, onLoginComoRepresentante }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [erro, setErro]         = useState('')
@@ -24,6 +24,7 @@ export default function LoginFabrica({ mudarTela, onLoginComoRepresentante }) {
       const me = await api.get('auth/me/')
       const { fabrica, representante } = me.data || {}
       if (fabrica) {
+        if (setFabricaLogada) setFabricaLogada(true)
         if (mudarTela) mudarTela('fabrica')
       } else if (representante) {
         localStorage.removeItem('tokenPantex')
@@ -89,6 +90,17 @@ export default function LoginFabrica({ mudarTela, onLoginComoRepresentante }) {
             </div>
           )}
         </form>
+
+        <p style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.85rem', opacity: 0.7 }}>
+          É representante/vendedor?{' '}
+          <button
+            type="button"
+            onClick={() => mudarTela && mudarTela('vendedor')}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', color: 'inherit', fontSize: 'inherit', padding: 0 }}
+          >
+            Acesse o portal do vendedor
+          </button>
+        </p>
       </div>
     </div>
   )
