@@ -449,6 +449,7 @@ function PainelFabrica() {
             className="toggle-nav-sidebar"
             onClick={() => setSidebarAberta(!sidebarAberta)}
             aria-label="Alternar navegação"
+            style={{ position: 'fixed', top: 64, left: 8, zIndex: 9999 }}
           >
             ☰
           </button>
